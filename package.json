@@ -1,0 +1,19 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": " John Horton Conway \"Game of life\" simulator\"",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JAFB321/game-of-life.git"
+  },
+  "author": "JAFB321",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JAFB321/game-of-life/issues"
+  },
+  "homepage": "https://github.com/JAFB321/game-of-life#readme"
+}
