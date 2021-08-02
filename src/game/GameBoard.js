@@ -7,6 +7,22 @@ export class Point{
         this.y = y;
     }
 }
+
+export class Rectangle{
+    point1;
+    point2;
+
+    constructor(x1, y1, x2, y2){
+        this.point1 = new Point(x1, y1);
+        this.point2 = new Point(x2, y2);
+    }
+
+    constructor(point1, point2){
+        this.point1 = point1
+        this.point2 = point2
+    }
+}
+
 export class GameBoard {
 
     // Cells Cartesian Plane
