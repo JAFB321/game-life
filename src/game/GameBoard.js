@@ -16,11 +16,6 @@ export class Rectangle{
         this.point1 = new Point(x1, y1);
         this.point2 = new Point(x2, y2);
     }
-
-    constructor(point1, point2){
-        this.point1 = point1
-        this.point2 = point2
-    }
 }
 
 export class CartesianPlane {
@@ -63,19 +58,19 @@ export class CartesianPlane {
         const {x, y} = point;
 
         if (x >= 0 && y >= 0) {
-            this._verifyRow(x, this.quadrant1);
+            if(!this.quadrant1[x]) return this.defaultValue;
 			return this.quadrant1[x][y] || this.defaultValue;
 
 		} else if (x < 0 && y >= 0) {
-            this._verifyRow(x*-1, this.quadrant2);
+            if(!this.quadrant2[x*-1]) return this.defaultValue;
 			return this.quadrant2[x*-1][y] || this.defaultValue;
 
 		} else if (x < 0 && y < 0) {
-            this._verifyRow(x*-1, this.quadrant3);
+            if(!this.quadrant3[x*-1]) return this.defaultValue;
 			return this.quadrant3[x*-1][y*-1] || this.defaultValue;
 
 		} else {
-            this._verifyRow(x, this.quadrant4);
+            if(!this.quadrant4[x]) return this.defaultValue;
 			return this.quadrant4[x][y*-1] || this.defaultValue;
 		}
     }
@@ -114,7 +109,7 @@ export class GameBoard {
     } 
 
 	setCell(point = new Point(0, 0)) {
-        this._updateLimits(x, y);
+        this._updateLimits(point);
 		this.board.setPoint(point, true);
 	}
 
@@ -140,10 +135,21 @@ export class GameBoard {
     }
 
     nextGeneration(){
+
+        const newLimits = {
+            x: {...this.limits.x},
+            y: {...this.limits.y}
+        };
+        newLimits.x.min-= 2;
+        newLimits.x.max+= 2;
+        newLimits.y.min-= 2;
+        newLimits.y.max+= 2;
+        this._resetLimits();
+        
         const newPlane = new CartesianPlane(false);
 
-        for(let x_pos = this.limits.x.min; x_pos < this.limits.x.max; x_pos++){
-            for(let y_pos = this.limits.y.min; y_pos < this.limits.y.max; y_pos++){
+        for(let x_pos = newLimits.x.min; x_pos < newLimits.x.max; x_pos++){
+            for(let y_pos = newLimits.y.min; y_pos < newLimits.y.max; y_pos++){
                 
                 // Current cell
                 const point = new Point(x_pos, y_pos);
@@ -153,14 +159,14 @@ export class GameBoard {
                 let newCell = false;
 
                 // Cell Silbings
-                const up = this.board.getPoint(x_pos, y_pos+1),
-                      right_up = this.board.getPoint(x_pos+1, y_pos+1),
-                      right = this.board.getPoint(x_pos+1, y_pos),
-                      right_down = this.board.getPoint(x_pos+1, y_pos-1),
-                      down = this.board.getPoint(x_pos, y_pos-1),
-                      left_down = this.board.getPoint(x_pos-1, y_pos-1),
-                      left = this.board.getPoint(x_pos-1, y_pos),
-                      left_up = this.board.getPoint(x_pos-1, y_pos+1)
+                const up = this.board.getPoint(new Point(x_pos, y_pos+1)),
+                      right_up = this.board.getPoint(new Point(x_pos+1, y_pos+1)),
+                      right = this.board.getPoint(new Point(x_pos+1, y_pos)),
+                      right_down = this.board.getPoint(new Point(x_pos+1, y_pos-1)),
+                      down = this.board.getPoint(new Point(x_pos, y_pos-1)),
+                      left_down = this.board.getPoint(new Point(x_pos-1, y_pos-1)),
+                      left = this.board.getPoint(new Point(x_pos-1, y_pos)),
+                      left_up = this.board.getPoint(new Point(x_pos-1, y_pos+1))
                 
                 // Count alive silbings
                 let aliveSilbings = 0;
@@ -173,11 +179,30 @@ export class GameBoard {
                 aliveSilbings += left ? 1 : 0;
                 aliveSilbings += left_up ? 1 : 0;
 
-                // if(isAlive){
+                if(isAlive){
+                    if(aliveSilbings < 2) {
+                        newCell = false;
+                    }
+                    else if(aliveSilbings <= 3) {
+                        newCell = true;
+                    }
+                    else {
+                        newCell = false;
+                    }
+                }
+                else {
+                    if(aliveSilbings === 3) {
+                        newCell = true;
+                    }
+                    else {
+                        newCell = false;
+                    }
+                }
 
-                // }
+                newPlane.setPoint(point, newCell);
             }
         }
+        this.board = newPlane;
     }
 
     resetCells(){
