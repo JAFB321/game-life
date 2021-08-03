@@ -1,4 +1,4 @@
-import { GameBoard, Point } from "./GameBoard";
+import { GameBoard, Point, Rectangle } from "./GameBoard";
 
 export class GameLife {
     
@@ -8,12 +8,16 @@ export class GameLife {
         this.gameBoard = new GameBoard();
     }
 
-    initGame(initialCells = [[0,0]]){
-        initialCells.forEach(([x,y]) => this.gameBoard.setCell(x, y, true));
+    initGame(initialCells = [new Point(0, 0)]){
+        initialCells.forEach(({x, y}) => this.gameBoard.setCell(x, y, true));
     }
 
-    getGameboard(size = [100, 100]){
-        
+    getGameboard(size = new Rectangle(-100, 100, 100, -100)){
+        for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
+            for(let y_pos = size.point1.y; y_pos < size.point2.y; y_pos++){
+                
+            }
+        }
     }
 
 }
