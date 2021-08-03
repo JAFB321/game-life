@@ -123,19 +123,60 @@ export class GameBoard {
     }
 
     getBoard(size = new Rectangle(-100, -100, 100, 100)){
-        const plane = new CartesianPlane(false);
+        const board = new CartesianPlane(false);
 
         for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
             for(let y_pos = size.point1.y; y_pos < size.point2.y; y_pos++){
                 const point = new Point(x_pos, y_pos);
-                const pointValue = this.board.getPoint(point);
-                if(!!pointValue) plane.setPoint(point, pointValue);
+                const isAlive = this.board.getPoint(point);
+                if(!!isAlive) plane.setPoint(point, true);
             }
         }
 
         return{
-            board: plane,
+            board,
             size: size
+        }
+    }
+
+    nextGeneration(){
+        const newPlane = new CartesianPlane(false);
+
+        for(let x_pos = this.limits.x.min; x_pos < this.limits.x.max; x_pos++){
+            for(let y_pos = this.limits.y.min; y_pos < this.limits.y.max; y_pos++){
+                
+                // Current cell
+                const point = new Point(x_pos, y_pos);
+                const isAlive = this.board.getPoint(point);
+
+                // New Cell
+                let newCell = false;
+
+                // Cell Silbings
+                const up = this.board.getPoint(x_pos, y_pos+1),
+                      right_up = this.board.getPoint(x_pos+1, y_pos+1),
+                      right = this.board.getPoint(x_pos+1, y_pos),
+                      right_down = this.board.getPoint(x_pos+1, y_pos-1),
+                      down = this.board.getPoint(x_pos, y_pos-1),
+                      left_down = this.board.getPoint(x_pos-1, y_pos-1),
+                      left = this.board.getPoint(x_pos-1, y_pos),
+                      left_up = this.board.getPoint(x_pos-1, y_pos+1)
+                
+                // Count alive silbings
+                let aliveSilbings = 0;
+                aliveSilbings += up ? 1 : 0;
+                aliveSilbings += right_up ? 1 : 0;
+                aliveSilbings += right ? 1 : 0;
+                aliveSilbings += right_down  ? 1 : 0;
+                aliveSilbings += down ? 1 : 0;
+                aliveSilbings += left_down ? 1 : 0;
+                aliveSilbings += left ? 1 : 0;
+                aliveSilbings += left_up ? 1 : 0;
+
+                // if(isAlive){
+
+                // }
+            }
         }
     }
 
