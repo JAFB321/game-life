@@ -9,7 +9,7 @@ export class GameLife {
     }
 
     initGame(initialCells = [new Point(0, 0)]){
-        initialCells.forEach(({x, y}) => this.gameBoard.setCell(x, y, true));
+        initialCells.forEach(({x, y}) => this.gameBoard.setCell(x, y));
     }
 
     getGameboard(size = new Rectangle(-100, 100, 100, -100)){
