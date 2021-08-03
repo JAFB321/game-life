@@ -54,8 +54,7 @@ export class CartesianPlane {
         }
     }
 
-    getPoint(point = new Point(0, 0)){
-        const {x, y} = point;
+    getPoint(x, y){
 
         if (x >= 0 && y >= 0) {
             if(!this.quadrant1[x]) return this.defaultValue;
@@ -113,8 +112,8 @@ export class GameBoard {
 		this.board.setPoint(point, true);
 	}
 
-    getCell(point = new Point(0, 0)){
-        return this.board.getPoint(point);
+    getCell(x, y){
+        return this.board.getPoint(x, y);
     }
 
     getBoard(size = new Rectangle(-100, -100, 100, 100)){
@@ -123,7 +122,7 @@ export class GameBoard {
         for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
             for(let y_pos = size.point1.y; y_pos < size.point2.y; y_pos++){
                 const point = new Point(x_pos, y_pos);
-                const isAlive = this.board.getPoint(point);
+                const isAlive = this.board.getPoint(x_pos, y_pos);
                 if(!!isAlive) plane.setPoint(point, true);
             }
         }
@@ -135,11 +134,14 @@ export class GameBoard {
     }
 
     nextGeneration(){
-
         const newLimits = {
             x: {...this.limits.x},
             y: {...this.limits.y}
         };
+        // newLimits.x.min--;
+        // newLimits.x.max++;
+        // newLimits.y.min--;
+        // newLimits.y.max++;
         newLimits.x.min-= 2;
         newLimits.x.max+= 2;
         newLimits.y.min-= 2;
@@ -153,32 +155,23 @@ export class GameBoard {
                 
                 // Current cell
                 const point = new Point(x_pos, y_pos);
-                const isAlive = this.board.getPoint(point);
+                const isAlive = this.board.getPoint(x_pos, y_pos);
 
                 // New Cell
                 let newCell = false;
 
-                // Cell Silbings
-                const up = this.board.getPoint(new Point(x_pos, y_pos+1)),
-                      right_up = this.board.getPoint(new Point(x_pos+1, y_pos+1)),
-                      right = this.board.getPoint(new Point(x_pos+1, y_pos)),
-                      right_down = this.board.getPoint(new Point(x_pos+1, y_pos-1)),
-                      down = this.board.getPoint(new Point(x_pos, y_pos-1)),
-                      left_down = this.board.getPoint(new Point(x_pos-1, y_pos-1)),
-                      left = this.board.getPoint(new Point(x_pos-1, y_pos)),
-                      left_up = this.board.getPoint(new Point(x_pos-1, y_pos+1))
-                
                 // Count alive silbings
                 let aliveSilbings = 0;
-                aliveSilbings += up ? 1 : 0;
-                aliveSilbings += right_up ? 1 : 0;
-                aliveSilbings += right ? 1 : 0;
-                aliveSilbings += right_down  ? 1 : 0;
-                aliveSilbings += down ? 1 : 0;
-                aliveSilbings += left_down ? 1 : 0;
-                aliveSilbings += left ? 1 : 0;
-                aliveSilbings += left_up ? 1 : 0;
+                aliveSilbings += this.board.getPoint(x_pos, y_pos+1);
+                aliveSilbings += this.board.getPoint(x_pos+1, y_pos+1);
+                aliveSilbings += this.board.getPoint(x_pos+1, y_pos)
+                aliveSilbings += this.board.getPoint(x_pos+1, y_pos-1);
+                aliveSilbings += this.board.getPoint(x_pos, y_pos-1);
+                aliveSilbings += this.board.getPoint(x_pos-1, y_pos-1);
+                aliveSilbings += this.board.getPoint(x_pos-1, y_pos);
+                aliveSilbings += this.board.getPoint(x_pos-1, y_pos+1)
 
+                // Cell live rules
                 if(isAlive){
                     if(aliveSilbings < 2) {
                         newCell = false;
@@ -198,10 +191,14 @@ export class GameBoard {
                         newCell = false;
                     }
                 }
-
-                newPlane.setPoint(point, newCell);
+            
+                if(newCell){
+                    newPlane.setPoint(point, true);
+                    this._updateLimits(point);
+                }
             }
         }
+
         this.board = newPlane;
     }
 
