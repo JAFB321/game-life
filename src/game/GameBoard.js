@@ -23,53 +23,46 @@ export class Rectangle{
     }
 }
 
-export class GameBoard {
+export class CartesianPlane {
 
-    // Cells Cartesian Plane
-	quadrant1 = []; // x+ y+
-	quadrant2 = []; // x- y+
-	quadrant3 = []; // x- y-
-	quadrant4 = []; // x+ y-
+    // Cartesian Plane quadrants
+    quadrant1 = []; // x+ y+
+    quadrant2 = []; // x- y+
+    quadrant3 = []; // x- y-
+    quadrant4 = []; // x+ y-
 
-    // Default dead cell value
+    // Default point value
     defaultValue = false;
 
-    // Min and max current values in the plane
-    limits = {
-        x:{
-            min: 0,
-            max: 0
-        },
-        y:{
-            min: 0,
-            max: 0
+    constructor(defaultValue = false){
+        this.defaultValue = defaultValue;
+    }
+
+    setPoint(point = new Point(0, 0), value) {
+        const {x, y} = point;
+        this._updateLimits(x, y);
+
+        if (x >= 0 && y >= 0) {
+            this._verifyRow(x, this.quadrant1);
+            this.quadrant1[x][y] = value;
+
+        } else if (x < 0 && y >= 0) {
+            this._verifyRow(x*-1, this.quadrant2);
+            this.quadrant2[x*-1][y] = value;
+
+        } else if (x < 0 && y < 0) {
+            this._verifyRow(x*-1, this.quadrant3);
+            this.quadrant3[x*-1][y*-1] = value;
+
+        } else {
+            this._verifyRow(x, this.quadrant4);
+            this.quadrant4[x][y*-1] = value;
         }
     }
 
-	constructor() {} 
+    getPoint(point = new Point(0, 0)){
+        const {x, y} = point;
 
-	setCell(x, y, value) {
-        this._updateLimits(x, y);
-
-		if (x >= 0 && y >= 0) {
-            this._verifyRow(x, this.quadrant1);
-			this.quadrant1[x][y] = value;
-
-		} else if (x < 0 && y >= 0) {
-            this._verifyRow(x*-1, this.quadrant2);
-			this.quadrant2[x*-1][y] = value;
-
-		} else if (x < 0 && y < 0) {
-            this._verifyRow(x*-1, this.quadrant3);
-			this.quadrant3[x*-1][y*-1] = value;
-
-		} else {
-            this._verifyRow(x, this.quadrant4);
-			this.quadrant4[x][y*-1] = value;
-		}
-	}
-
-    getCell(x, y){
         if (x >= 0 && y >= 0) {
             this._verifyRow(x, this.quadrant1);
 			return this.quadrant1[x][y] || this.defaultValue;
@@ -88,7 +81,7 @@ export class GameBoard {
 		}
     }
 
-    resetCells(){
+    resetPlane(){
         this.quadrant1 = [];
         this.quadrant2 = [];
         this.quadrant3 = [];
@@ -98,8 +91,44 @@ export class GameBoard {
     _verifyRow(x, quadrant){
         if(!quadrant[x]) quadrant[x] = [];
     }
-    
-    _updateLimits(x, y){
+}
+
+export class GameBoard {
+
+    // Gameboard
+    board;
+
+    // Min and max current values in the board
+    limits = {
+        x:{
+            min: 0,
+            max: 0
+        },
+        y:{
+            min: 0,
+            max: 0
+        }
+    }
+
+	constructor() {
+        this.board = new CartesianPlane(false);
+    } 
+
+	setCell(point = new Point(0, 0)) {
+        this._updateLimits(x, y);
+		this.board.setPoint(point, true);
+	}
+
+    getCell(point = new Point(0, 0)){
+        return this.board.getPoint(point);
+    }
+
+    resetCells(){
+        this.board.resetPlane();
+    }
+
+    _updateLimits(point = new Point(0, 0)){
+        const {x, y} = point;
         const {min: x_min, max: x_max} = this.limits.x;
         const {min: y_min, max: y_max} = this.limits.y;
         
