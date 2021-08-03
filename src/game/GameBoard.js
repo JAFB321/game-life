@@ -33,9 +33,7 @@ export class CartesianPlane {
         this.defaultValue = defaultValue;
     }
 
-    setPoint(point = new Point(0, 0), value) {
-        const {x, y} = point;
-
+    setPoint(x, y, value) {
         if (x >= 0 && y >= 0) {
             this._verifyRow(x, this.quadrant1);
             this.quadrant1[x][y] = value;
@@ -107,9 +105,9 @@ export class GameBoard {
         this.board = new CartesianPlane(false);
     } 
 
-	setCell(point = new Point(0, 0)) {
+	setCell(x, y) {
         this._updateLimits(point);
-		this.board.setPoint(point, true);
+		this.board.setPoint(x, y, true);
 	}
 
     getCell(x, y){
@@ -121,9 +119,8 @@ export class GameBoard {
 
         for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
             for(let y_pos = size.point1.y; y_pos < size.point2.y; y_pos++){
-                const point = new Point(x_pos, y_pos);
                 const isAlive = this.board.getPoint(x_pos, y_pos);
-                if(!!isAlive) plane.setPoint(point, true);
+                if(!!isAlive) plane.setPoint(x_pos, y_pos, true);
             }
         }
 
@@ -155,7 +152,6 @@ export class GameBoard {
             for(let y_pos = newLimits.y.min; y_pos < newLimits.y.max; y_pos++){
                 
                 // Current cell
-                const point = new Point(x_pos, y_pos);
                 const isAlive = this.board.getPoint(x_pos, y_pos);
 
                 // New Cell
@@ -194,8 +190,8 @@ export class GameBoard {
                 }
             
                 if(newCell){
-                    newPlane.setPoint(point, true);
-                    this._updateLimits(point);
+                    newPlane.setPoint(x_pos, y_pos, true);
+                    this._updateLimits(x_pos, y_pos);
                 }
             }
         }
@@ -209,8 +205,7 @@ export class GameBoard {
         this.board.resetPlane();
     }
 
-    _updateLimits(point = new Point(0, 0)){
-        const {x, y} = point;
+    _updateLimits(x, y){
         const {min: x_min, max: x_max} = this.limits.x;
         const {min: y_min, max: y_max} = this.limits.y;
         
