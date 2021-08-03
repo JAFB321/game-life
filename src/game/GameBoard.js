@@ -123,6 +123,14 @@ export class GameBoard {
         return this.board.getPoint(point);
     }
 
+    getGameboard(size = new Rectangle(-100, 100, 100, -100)){
+        for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
+            for(let y_pos = size.point1.y; y_pos < size.point2.y; y_pos++){
+                
+            }
+        }
+    }
+
     resetCells(){
         this.board.resetPlane();
     }
