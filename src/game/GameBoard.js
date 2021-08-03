@@ -134,6 +134,7 @@ export class GameBoard {
     }
 
     nextGeneration(){
+        performance.mark("start-script")
         const newLimits = {
             x: {...this.limits.x},
             y: {...this.limits.y}
@@ -199,6 +200,8 @@ export class GameBoard {
             }
         }
 
+        performance.mark("end-script")
+        console.log(performance.measure("total-script-execution-time", "start-script", "end-script").duration / 1000);
         this.board = newPlane;
     }
 
