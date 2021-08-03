@@ -40,7 +40,6 @@ export class CartesianPlane {
 
     setPoint(point = new Point(0, 0), value) {
         const {x, y} = point;
-        this._updateLimits(x, y);
 
         if (x >= 0 && y >= 0) {
             this._verifyRow(x, this.quadrant1);
@@ -123,11 +122,20 @@ export class GameBoard {
         return this.board.getPoint(point);
     }
 
-    getGameboard(size = new Rectangle(-100, 100, 100, -100)){
+    getBoard(size = new Rectangle(-100, -100, 100, 100)){
+        const newPlane = new CartesianPlane(false);
+
         for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
             for(let y_pos = size.point1.y; y_pos < size.point2.y; y_pos++){
-                
+                const point = new Point(x_pos, y_pos);
+                const pointValue = this.board.getPoint(point);
+                if(!!pointValue) newPlane.setPoint(point, pointValue);
             }
+        }
+
+        return{
+            board: newPlane,
+            size: size
         }
     }
 
