@@ -105,9 +105,9 @@ export class GameBoard {
         this.board = new CartesianPlane(false);
     } 
 
-	setCell(x, y) {
-        this._updateLimits(point);
-		this.board.setPoint(x, y, true);
+	setCell(x, y, alive = true) {
+        this._updateLimits(x, y);
+		this.board.setPoint(x, y, alive);
 	}
 
     getCell(x, y){
