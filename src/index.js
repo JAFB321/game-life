@@ -58,6 +58,6 @@ window.nextGen = () => {
     window.printBoard();
 }
 
-setInterval(() => {
-    window.nextGen();
-}, 100);
+// setInterval(() => {
+//     window.nextGen();
+// }, 100);

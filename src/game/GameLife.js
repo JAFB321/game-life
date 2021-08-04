@@ -1,15 +1,31 @@
-import { GameBoard, Point, Rectangle } from "./GameBoard";
+import { GameBoard, CartesianPlane, Rectangle } from "./GameBoard";
 
 export class GameLife {
-    
+
     gameBoard;
 
     constructor(){
         this.gameBoard = new GameBoard();
     }
+    
+    bornCell(x, y){
+        this.gameBoard.setCell(x, y, true);
+    }
 
-    initGame(initialCells = [new Point(0, 0)]){
-        initialCells.forEach(({x, y}) => this.gameBoard.setCell(x, y));
+    killCell(x, y){
+        this.gameBoard.setCell(x, y, false);
+    }
+
+    getBoard(size = new Rectangle(-100, -100, 100, 100)){
+        return this.gameBoard.getBoard(size);
+    }
+
+    initGame(options = {
+         onNextGeneration: (board, size) => {},
+         timeInterval: 1000,
+         
+        }){
+        
     }
 
 
