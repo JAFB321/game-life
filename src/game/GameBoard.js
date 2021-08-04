@@ -130,7 +130,17 @@ export class GameBoard {
         }
     }
 
+    resetCells(){
+        this.board.resetPlane();
+        this._resetLimits();
+    }
+
     nextGeneration(){
+        const newGeneration = this._getNextGeneration();
+        this.board = newGeneration;
+    }
+
+    _getNextGeneration(){
         performance.mark("start-script")
         const newLimits = {
             x: {...this.limits.x},
@@ -198,11 +208,8 @@ export class GameBoard {
 
         performance.mark("end-script")
         console.log(performance.measure("total-script-execution-time", "start-script", "end-script").duration / 1000);
-        this.board = newPlane;
-    }
 
-    resetCells(){
-        this.board.resetPlane();
+        return newPlane;
     }
 
     _updateLimits(x, y){
