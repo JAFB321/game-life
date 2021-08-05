@@ -16,23 +16,33 @@ import {GameBoard, Point} from './game/GameBoard.js'
 window.game = new GameBoard();
 var game = window.game;
 
-// game.setCell(new Point(100,100));
-// game.setCell(new Point(50,50));
-// game.setCell(new Point(51,50));
-// game.setCell(new Point(52,50));
-// game.setCell(new Point(51, 49));
+// Testing patern
+game.setCell(100,100);
+game.setCell(50,50);
+game.setCell(51,50);
+game.setCell(52,50);
+game.setCell(51,49);
+game.setCell(50,50);
+game.setCell(51,51);
+game.setCell(51,52);
+game.setCell(50,52);
+game.setCell(49,52);
+game.setCell(100+3,10+30);
+game.setCell(50+3,50+3);
+game.setCell(51+3,50+3);
+game.setCell(52+3,50+3);
+game.setCell(51+3,49+3);
+game.setCell(50+3,50+3);
+game.setCell(51+3,51+3);
+game.setCell(51+3,52+3);
+game.setCell(50+3,52+3);
+game.setCell(49+3,52+3);
 
-game.setCell(new Point(50,50));
-game.setCell(new Point(51,51));
-game.setCell(new Point(51,52));
-game.setCell(new Point(50,52));
-game.setCell(new Point(49,52));
-
-// game.setCell(new Point(50,50));
-// game.setCell(new Point(51,51));
-// game.setCell(new Point(52,51));
-// game.setCell(new Point(51,52));
-// game.setCell(new Point(50,52));
+// game.setCell(50,50);
+// game.setCell(51,51);
+// game.setCell(52,51);
+// game.setCell(51,52);
+// game.setCell(50,52);
 
 window.printBoard = () =>{
     for (let x = 0; x < 202; x++) {
@@ -58,6 +68,6 @@ window.nextGen = () => {
     window.printBoard();
 }
 
-// setInterval(() => {
-//     window.nextGen();
-// }, 100);
+setInterval(() => {
+    window.nextGen();
+}, 100);
