@@ -1,4 +1,4 @@
-import { GameBoard, CartesianPlane, Rectangle } from "./GameBoard";
+import { GameBoard, CartesianPlane, Rectangle } from "./GameBoard.js";
 
 export class GameLife {
 
@@ -10,7 +10,7 @@ export class GameLife {
         config: {
             onNextGeneration: (size = new Rectangle(0,0,100,100), board = new CartesianPlane(false)) => {},
             delayDuration: 200,
-            size = new Rectangle(0,0,100,100)
+            size: new Rectangle(0,0,100,100)
         }
     }
 
@@ -37,7 +37,7 @@ export class GameLife {
     startEvolution(options = {
         onNextGeneration: (size = new Rectangle(0,0,100,100), board = new CartesianPlane(false)) => {},
         delayDuration: 200,
-        size = new Rectangle(0,0,100,100)
+        size: new Rectangle(0,0,100,100)
     }){
         const { onNextGeneration, delayDuration, size } = options;
         const { isEvolving } = this._evolution;
