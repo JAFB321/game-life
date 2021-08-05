@@ -11,32 +11,33 @@ const ctx = canvas.getContext('2d');
 // ctx.closePath();
 // ctx.beginPath();
 
-import {GameBoard, Point} from './game/GameBoard.js'
+import { GameLife } from './game/GameLife.js'
+import { Rectangle } from './game/GameBoard.js'
 
-window.game = new GameBoard();
-var game = window.game;
+
+var game = new GameLife();
 
 // Testing patern
-game.setCell(100,100);
-game.setCell(50,50);
-game.setCell(51,50);
-game.setCell(52,50);
-game.setCell(51,49);
-game.setCell(50,50);
-game.setCell(51,51);
-game.setCell(51,52);
-game.setCell(50,52);
-game.setCell(49,52);
-game.setCell(100+3,10+30);
-game.setCell(50+3,50+3);
-game.setCell(51+3,50+3);
-game.setCell(52+3,50+3);
-game.setCell(51+3,49+3);
-game.setCell(50+3,50+3);
-game.setCell(51+3,51+3);
-game.setCell(51+3,52+3);
-game.setCell(50+3,52+3);
-game.setCell(49+3,52+3);
+game.bornCell(100,100);
+game.bornCell(50,50);
+game.bornCell(51,50);
+game.bornCell(52,50);
+game.bornCell(51,49);
+game.bornCell(50,50);
+game.bornCell(51,51);
+game.bornCell(51,52);
+game.bornCell(50,52);
+game.bornCell(49,52);
+game.bornCell(100+3,10+30);
+game.bornCell(50+3,50+3);
+game.bornCell(51+3,50+3);
+game.bornCell(52+3,50+3);
+game.bornCell(51+3,49+3);
+game.bornCell(50+3,50+3);
+game.bornCell(51+3,51+3);
+game.bornCell(51+3,52+3);
+game.bornCell(50+3,52+3);
+game.bornCell(49+3,52+3);
 
 // game.setCell(50,50);
 // game.setCell(51,51);
@@ -44,30 +45,25 @@ game.setCell(49+3,52+3);
 // game.setCell(51,52);
 // game.setCell(50,52);
 
-window.printBoard = () =>{
-    for (let x = 0; x < 202; x++) {
-        for (let y = 0; y < 202; y++) {
-            const isAlive = game.getCell(x-100, y-100);
-    
-            if(isAlive){
-                ctx.fillRect(x+x, y+y, 1, 1)
-            }
-        }
-    }
-}
-
 window.cleanBoard = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-window.printBoard();
+game.startEvolution({
+    onNextGeneration: (size, board) => {
 
-window.nextGen = () => {
-    window.cleanBoard();
-    game.nextGeneration();
-    window.printBoard();
-}
+        window.cleanBoard();
+        for (let x = 0; x < 202; x++) {
+            for (let y = 0; y < 202; y++) {
+                const isAlive = board.getPoint(x-100, y-100);
+        
+                if(isAlive){
+                    ctx.fillRect(x+x, y+y, 1, 1)
+                }
+            }
+        }
+    },
+    delayDuration: 100,
+    size: new Rectangle(-100, -100, 200, 200)
+})
 
-setInterval(() => {
-    window.nextGen();
-}, 100);
