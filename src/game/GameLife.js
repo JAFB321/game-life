@@ -1,4 +1,5 @@
-import { GameBoard, CartesianPlane, Rectangle } from "./GameBoard.js";
+import { GameBoard } from "./GameBoard.js";
+import { CartesianPlane, Rectangle } from "./structures/CartesianPlane.js";
 
 export class GameLife {
 

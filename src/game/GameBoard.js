@@ -1,3 +1,5 @@
+import { CartesianPlane, Rectangle } from "./structures/CartesianPlane.js";
+
 export class GameBoard {
 
     // Gameboard

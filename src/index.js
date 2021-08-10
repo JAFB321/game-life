@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d');
 // ctx.beginPath();
 
 import { GameLife } from './game/GameLife.js'
-import { Rectangle } from './game/GameBoard.js'
+import { Rectangle } from './game/structures/CartesianPlane.js'
 
 
 var game = new GameLife();
