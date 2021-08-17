@@ -1,8 +1,49 @@
+*{
+    font-family: 'Roboto Mono', monospace;
+}
+
 body{
     height: 100%;
-    background-color: antiquewhite;
+    background-color: #22272e;
+}
+
+a{
+    color: #fff;
+    text-decoration: none;
 }
 
 canvas{
-    background-color: #fff;
+    background-color: #22272e;
+}
+
+/* Globals */
+.link{
+
+}
+
+.link:hover{
+    color: #DAF7A6;
+}
+
+/* Site Header */
+.site-header{
+    align-items: center;
+    background-color: #2E2322;
+    display: flex;
+    height: 40px;
+    padding: 10px 30px;
+}
+
+.site-header .site-navigation{
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 30px;
+    height: 100%;
+}
+
+.site-header .site-navigation .link{
+    /* height: 100%; */
+    padding: 15px 10px;
 }
