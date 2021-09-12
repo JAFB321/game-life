@@ -3,7 +3,7 @@
 }
 
 body{
-    height: 100%;
+    min-height: 100vh;
     background-color: #22272e;
 }
 
@@ -28,22 +28,61 @@ canvas{
 /* Site Header */
 .site-header{
     align-items: center;
+    justify-content: center;
     background-color: #2E2322;
     display: flex;
     height: 40px;
     padding: 10px 30px;
+    position: relative;
 }
 
 .site-header .site-navigation{
+    flex-direction: column;
     font-weight: 500;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    column-gap: 30px;
     height: 100%;
 }
 
 .site-header .site-navigation .link{
     /* height: 100%; */
     padding: 15px 10px;
+}
+
+.site-title{
+    color: #fff;
+}
+
+/* Aside navigation */
+.open-nav-btn{
+    background: none;
+    border: none;
+    color: #fff;    
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+}
+
+.aside-nav{
+    background-color: #2E2322;
+    height: calc(100vh - 100%);
+    left: 0;
+    position: absolute;
+    top: 100%;
+    transition-duration: 400ms;
+    width: 200px;
+}
+
+.aside-nav-closed{
+    display: none;
+    transform: translateX(-50vw);
+}
+
+.aside-nav-opened{
+    display: block;
+}
+
+/* Gameboard */
+.gameboard-container{
+    width: 100%;    
 }
