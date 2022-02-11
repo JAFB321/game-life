@@ -2,7 +2,7 @@ const canvas = document.querySelector('#gameboard-main');
 const ctx = canvas.getContext('2d');
 
 import { GameLife } from './game/core/GameLife.js'
-import { Rectangle } from './game/core/structures/CartesianPlane.js'
+import { Rectangle } from './game/structures/CartesianPlane.js'
 
 // ---
 const width = 1900.5;
