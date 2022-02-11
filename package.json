@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JAFB321/game-of-life/issues"
   },
-  "homepage": "https://github.com/JAFB321/game-of-life#readme"
+  "homepage": "https://github.com/JAFB321/game-of-life#readme",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  }
 }
