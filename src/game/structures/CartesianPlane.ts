@@ -1,58 +1,57 @@
-export class Point{
-    x;
-    y;
-
-    constructor(x, y){
-        this.x = x;
-        this.y = y;
-    }
+interface Point{
+    x: number
+    y: number
 }
 
-export class Rectangle{
-    point1;
-    point2;
+// export class Rectangle{
+//     point1;
+//     point2;
 
-    constructor(x1, y1, x2, y2){
-        this.point1 = new Point(x1, y1);
-        this.point2 = new Point(x2, y2);
-    }
-}
+//     constructor(x1, y1, x2, y2){
+//         this.point1 = new Point(x1, y1);
+//         this.point2 = new Point(x2, y2);
+//     }
+// }
 
-export class CartesianPlane {
+export class CartesianPlane<ValueType> {
 
     // Cartesian Plane quadrants
-    quadrant1 = []; // x+ y+
-    quadrant2 = []; // x- y+
-    quadrant3 = []; // x- y-
-    quadrant4 = []; // x+ y-
+    private quadrant1: (ValueType | null)[][]; // x+ y+
+    private quadrant2: (ValueType | null)[][]; // x- y+
+    private quadrant3: (ValueType | null)[][]; // x- y-
+    private quadrant4: (ValueType | null)[][]; // x+ y-
 
     // Default point value
-    defaultValue = false;
+    readonly defaultValue;
 
-    constructor(defaultValue = false){
+    constructor(defaultValue: ValueType | null){
         this.defaultValue = defaultValue;
+        this.quadrant1 = [[]];
+        this.quadrant2 = [[]];
+        this.quadrant3 = [[]];
+        this.quadrant4 = [[]];
     }
 
-    setPoint(x, y, value) {
+    public setPoint({x, y}: Point, value: ValueType) {
         if (x >= 0 && y >= 0) {
-            this._verifyRow(x, this.quadrant1);
+            this.verifyRow(x, this.quadrant1);
             this.quadrant1[x][y] = value;
 
         } else if (x < 0 && y >= 0) {
-            this._verifyRow(x*-1, this.quadrant2);
+            this.verifyRow(x*-1, this.quadrant2);
             this.quadrant2[x*-1][y] = value;
 
         } else if (x < 0 && y < 0) {
-            this._verifyRow(x*-1, this.quadrant3);
+            this.verifyRow(x*-1, this.quadrant3);
             this.quadrant3[x*-1][y*-1] = value;
 
         } else {
-            this._verifyRow(x, this.quadrant4);
+            this.verifyRow(x, this.quadrant4);
             this.quadrant4[x][y*-1] = value;
         }
     }
 
-    getPoint(x, y){
+    public getPoint({x, y}: Point){
 
         if (x >= 0 && y >= 0) {
             if(!this.quadrant1[x]) return this.defaultValue;
@@ -72,14 +71,14 @@ export class CartesianPlane {
 		}
     }
 
-    resetPlane(){
+    private resetPlane(){
         this.quadrant1 = [];
         this.quadrant2 = [];
         this.quadrant3 = [];
         this.quadrant4 = [];
     }
 
-    _verifyRow(x, quadrant){
+    private verifyRow(x: number, quadrant: (ValueType | null)[][]){
         if(!quadrant[x]) quadrant[x] = [];
     }
 }
