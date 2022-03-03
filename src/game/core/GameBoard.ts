@@ -1,36 +1,49 @@
-import { CartesianPlane, Rectangle } from "../structures/CartesianPlane.js";
+import { CartesianPlane, Point } from "../structures/CartesianPlane.js";
+
+interface BoardLimits {
+    x: {
+        min: number,
+        max: number
+    }
+
+    y: {
+        min: number,
+        max: number
+    }
+}
 
 export class GameBoard {
 
-    // Gameboard
-    board;
+    private board: CartesianPlane<boolean>;
 
     // Min and max current values in the board
-    limits = {
-        x:{
-            min: 0,
-            max: 0
-        },
-        y:{
-            min: 0,
-            max: 0
-        }
-    }
+    private limits: BoardLimits;
 
 	constructor() {
         this.board = new CartesianPlane(false);
-    } 
 
-	setCell(x, y, alive = true) {
-        this._updateLimits(x, y);
-		this.board.setPoint(x, y, alive);
-	}
-
-    getCell(x, y){
-        return this.board.getPoint(x, y);
+        this.limits = {
+            x:{
+                max: 0,
+                min: 0
+            },
+            y: {
+                max: 0,
+                min: 0
+            }
+        }
     }
 
-    getBoard(size = new Rectangle(-100, -100, 100, 100)){
+	public setCell({x,y}: Point, alive = true) {
+        this._updateLimits(x, y);
+		this.board.setPoint({x, y}, alive);
+	}
+
+    public getCell(point: Point){
+        return this.board.getPoint(point);
+    }
+
+    public getBoard(size = new Rectangle(-100, -100, 100, 100)){
         const board = new CartesianPlane(false);
 
         for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
