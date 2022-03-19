@@ -71,7 +71,7 @@ export class CartesianPlane<ValueType> {
 		}
     }
 
-    private resetPlane(){
+    public resetPlane(){
         this.quadrant1 = [];
         this.quadrant2 = [];
         this.quadrant3 = [];
