@@ -1,8 +1,7 @@
 const canvas = document.querySelector('#gameboard-main');
-const ctx = canvas.getContext('2d');
+const ctx = canvas?.getContext('2d');
 
 import { GameLife } from './game/core/GameLife.js'
-import { Rectangle } from './game/structures/CartesianPlane.js'
 
 // ---
 const width = 1900.5;
@@ -100,6 +99,5 @@ game.startEvolution({
         }
 
     },
-    delayDuration: 100,
-    size: new Rectangle(-100, -100, 200, 200)
+    delayDuration: 100
 })
