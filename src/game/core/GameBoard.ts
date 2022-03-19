@@ -1,4 +1,4 @@
-import { CartesianPlane, Point } from "../structures/CartesianPlane.js";
+import { CartesianPlane, Point } from "../structures/CartesianPlane";
 
 interface BoardLimits {
     x: {
@@ -35,7 +35,7 @@ export class GameBoard {
     }
 
 	public setCell({x,y}: Point, alive = true) {
-        this._updateLimits(x, y);
+        this.updateLimits(x, y);
 		this.board.setPoint({x, y}, alive);
 	}
 
@@ -43,47 +43,42 @@ export class GameBoard {
         return this.board.getPoint(point);
     }
 
-    public getBoard(size = new Rectangle(-100, -100, 100, 100)){
+    public getBoard(){
         const board = new CartesianPlane(false);
 
-        for(let x_pos = size.point1.x; x_pos < size.point2.x; x_pos++){
-            for(let y_pos = size.point1.y; y_pos < size.point2.y; y_pos++){
-                const isAlive = this.board.getPoint(x_pos, y_pos);
-                if(!!isAlive) board.setPoint(x_pos, y_pos, true);
+        for(let x = this.limits.x.min; x < this.limits.x.max; x++){
+            for(let y = this.limits.y.min; y < this.limits.y.min; y++){
+                const isAlive = this.board.getPoint({x, y});
+                if(!!isAlive) board.setPoint({x, y}, true);
             }
         }
 
         return{
-            board,
-            size: size
+            board
         }
     }
 
     resetCells(){
         this.board.resetPlane();
-        this._resetLimits();
+        this.resetLimits();
     }
 
     nextGeneration(){
-        const newGeneration = this._getNextGeneration();
-        this.board = newGeneration;
+        const newGeneration = this.getNextGeneration();
+        return this.board = newGeneration;
     }
 
-    _getNextGeneration(){
+    private getNextGeneration(){
         performance.mark("start-script")
         const newLimits = {
             x: {...this.limits.x},
             y: {...this.limits.y}
         };
-        // newLimits.x.min--;
-        // newLimits.x.max++;
-        // newLimits.y.min--;
-        // newLimits.y.max++;
         newLimits.x.min-= 2;
         newLimits.x.max+= 2;
         newLimits.y.min-= 2;
         newLimits.y.max+= 2;
-        this._resetLimits();
+        this.resetLimits();
         
         const newPlane = new CartesianPlane(false);
 
@@ -91,21 +86,21 @@ export class GameBoard {
             for(let y_pos = newLimits.y.min; y_pos < newLimits.y.max; y_pos++){
                 
                 // Current cell
-                const isAlive = this.board.getPoint(x_pos, y_pos);
+                const isAlive = this.board.getPoint({x: x_pos, y: y_pos});
 
                 // New Cell
                 let newCell = false;
 
                 // Count alive silbings
                 let aliveSilbings = 0;
-                aliveSilbings += this.board.getPoint(x_pos, y_pos+1);
-                aliveSilbings += this.board.getPoint(x_pos+1, y_pos+1);
-                aliveSilbings += this.board.getPoint(x_pos+1, y_pos)
-                aliveSilbings += this.board.getPoint(x_pos+1, y_pos-1);
-                aliveSilbings += this.board.getPoint(x_pos, y_pos-1);
-                aliveSilbings += this.board.getPoint(x_pos-1, y_pos-1);
-                aliveSilbings += this.board.getPoint(x_pos-1, y_pos);
-                aliveSilbings += this.board.getPoint(x_pos-1, y_pos+1)
+                aliveSilbings += this.board.getPoint({x: x_pos,   y: y_pos+1}) ? 1 : 0;
+                aliveSilbings += this.board.getPoint({x: x_pos+1, y: y_pos+1}) ? 1 : 0;
+                aliveSilbings += this.board.getPoint({x: x_pos+1, y: y_pos}) ? 1 : 0;
+                aliveSilbings += this.board.getPoint({x: x_pos+1, y: y_pos-1}) ? 1 : 0;
+                aliveSilbings += this.board.getPoint({x: x_pos,   y: y_pos-1}) ? 1 : 0;
+                aliveSilbings += this.board.getPoint({x: x_pos-1, y: y_pos-1}) ? 1 : 0;
+                aliveSilbings += this.board.getPoint({x: x_pos-1, y: y_pos}) ? 1 : 0;
+                aliveSilbings += this.board.getPoint({x: x_pos-1, y: y_pos+1}) ? 1 : 0;
 
                 // Cell live rules
                 if(isAlive){
@@ -129,8 +124,8 @@ export class GameBoard {
                 }
             
                 if(newCell){
-                    newPlane.setPoint(x_pos, y_pos, true);
-                    this._updateLimits(x_pos, y_pos);
+                    newPlane.setPoint({x: x_pos, y: y_pos}, true);
+                    this.updateLimits(x_pos, y_pos);
                 }
             }
         }
@@ -141,7 +136,7 @@ export class GameBoard {
         return newPlane;
     }
 
-    _updateLimits(x, y){
+    private updateLimits(x: number, y: number){
         const {min: x_min, max: x_max} = this.limits.x;
         const {min: y_min, max: y_max} = this.limits.y;
         
@@ -151,7 +146,7 @@ export class GameBoard {
         if(y > y_max) this.limits.y.max = y;
     }
     
-    _resetLimits(){
+    private resetLimits(){
         this.limits.x.min = 0;
         this.limits.x.max = 0;
         this.limits.y.min = 0;
