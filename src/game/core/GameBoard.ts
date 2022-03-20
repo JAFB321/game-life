@@ -1,4 +1,4 @@
-import { CartesianPlane, Point } from "../structures/CartesianPlane";
+import { CartesianPlane, Point } from "../structures/CartesianPlane.js";
 
 interface BoardLimits {
     x: {
@@ -46,10 +46,12 @@ export class GameBoard {
     public getBoard(){
         const board = new CartesianPlane(false);
 
-        for(let x = this.limits.x.min; x < this.limits.x.max; x++){
-            for(let y = this.limits.y.min; y < this.limits.y.min; y++){
+        for(let x = this.limits.x.min; x < this.limits.x.max+1; x++){
+            for(let y = this.limits.y.min; y < this.limits.y.max+1; y++){
                 const isAlive = this.board.getPoint({x, y});
-                if(!!isAlive) board.setPoint({x, y}, true);
+                if(!!isAlive) {
+                    board.setPoint({x, y}, true);
+                }
             }
         }
 
@@ -131,7 +133,7 @@ export class GameBoard {
         }
 
         performance.mark("end-script")
-        console.log(performance.measure("total-script-execution-time", "start-script", "end-script").duration / 1000);
+        // console.log(performance.measure("total-script-execution-time", "start-script", "end-script").duration / 1000);
 
         return newPlane;
     }
