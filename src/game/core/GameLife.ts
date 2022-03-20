@@ -1,5 +1,5 @@
-import { GameBoard } from "./GameBoard";
-import { CartesianPlane, Point } from "../structures/CartesianPlane";
+import { GameBoard } from "./GameBoard.js";
+import { CartesianPlane, Point } from "../structures/CartesianPlane.js";
 
 
 
@@ -47,11 +47,13 @@ export class GameLife {
             this.pauseEvolution();
         }
         
-        const intervalID = window.setInterval(() => {
-            this.gameBoard.nextGeneration();
-            const { board } = this.gameBoard.getBoard();
+        
+        const { board } = this.gameBoard.getBoard();
+        onNextGeneration(board);
 
-            onNextGeneration(board);
+        const intervalID = window.setInterval(() => {   
+            const nextGen = this.gameBoard.nextGeneration();
+            onNextGeneration(nextGen);
         }, delayDuration);
 
         this.evolution.isEvolving = true;
