@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": " John Horton Conway \"Game of life\" simulator\"",
   "scripts": {
-    "build": "tsc && npm run buikd:cp-public",
-    "buikd:cp-public": "cp ./public/** ./dist",
+    "start": "npm run build && npm run serve",
+    "serve": "http-server ./dist/ -a localhost -p 5500 -o",
+    "build": "tsc && npm run build:copy-files",
+    "build:watch": "npm run build:copy-files && tsc --watch",
+    "build:copy-files": "copyfiles -f ./public/** ./dist",
     "type": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },  
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JAFB321/game-of-life.git"
@@ -19,6 +22,8 @@
   },
   "homepage": "https://github.com/JAFB321/game-of-life#readme",
   "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "http-server": "^14.1.0",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.5",
     "webpack": "^5.68.0",
