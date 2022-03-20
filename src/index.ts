@@ -1,14 +1,15 @@
-const canvas = document.querySelector('#gameboard-main');
-const ctx = canvas?.getContext('2d');
-
 import { GameLife } from './game/core/GameLife.js'
+
+const canvas = document.querySelector<HTMLCanvasElement>('#gameboard-main');
+const ctx = canvas?.getContext('2d') || new CanvasRenderingContext2D();
+
 
 // ---
 const width = 1900.5;
 const height = 900.5;
 
 const drawGrid = () => {
-    
+
     ctx.moveTo(0.5,0.5);
     ctx.lineWidth = 0.8;
     const color = '#626567';
@@ -36,42 +37,37 @@ const clearCells = () => {
 
 var game = new GameLife();
 
-// Testing patern
-game.bornCell(100-25,100-25);
-game.bornCell(50-25,50-25);
-game.bornCell(51-25,50-25);
-game.bornCell(52-25,50-25);
-game.bornCell(51-25,49-25);
-game.bornCell(50-25,50-25);
-game.bornCell(51-25,51-25);
-game.bornCell(51-25,52-25);
-game.bornCell(50-25,52-25);
-game.bornCell(49-25,52-25);
-game.bornCell(100+3-25,10+30-25);
-game.bornCell(50+3-25,50+3-25);
-game.bornCell(51+3-25,50+3-25);
-game.bornCell(52+3-25,50+3-25);
-game.bornCell(51+3-25,49+3-25);
-game.bornCell(50+3-25,50+3-25);
-game.bornCell(51+3-25,51+3-25);
-game.bornCell(51+3-25,52+3-25);
-game.bornCell(50+3-25,52+3-25);
-game.bornCell(49+3-25,52+3-25);
+// // Testing patern
+// game.bornCell(100-25,100-25);
+// game.bornCell(50-25,50-25);
+// game.bornCell(51-25,50-25);
 
-// game.setCell(50,50);
-// game.setCell(51,51);
-// game.setCell(52,51);
-// game.setCell(51,52);
-// game.setCell(50,52);
+
+game.bornCell({x: 10,y: 10});
+game.bornCell({x: 11,y: 11});
+game.bornCell({x: 12,y: 11});
+game.bornCell({x: 12,y: 10});
+game.bornCell({x: 12,y: 9});
 
 drawGrid();
 
 game.startEvolution({
-    onNextGeneration: (size, board) => {
+    onNextGeneration: (board) => {
 
         clearCells();
         ctx.fillStyle = '#ffffff';
         
+        const size = {
+            point1: {
+                x: 0,
+                y: 0
+            },
+            point2: {
+                x: 200,
+                y: 200
+            }
+        }
+
         // Offsets
         const x_offset = size.point1.x;
         const y_offset = size.point1.y;
@@ -87,7 +83,7 @@ game.startEvolution({
 
         for (let x = 0; x < size.point2.x; x++) {
             for (let y = 0; y < size.point2.y; y++) {
-                const isAlive = board.getPoint(x, y);
+                const isAlive = board.getPoint({x, y});
         
                 if(isAlive){
                     const cell_x = row_size*x+row_gap+x_offset+1;
@@ -99,5 +95,15 @@ game.startEvolution({
         }
 
     },
-    delayDuration: 100
-})
+    delayDuration: 500
+});
+
+window.gameStart = () => game.resumeEvolution();
+window.gameStop = () => game.pauseEvolution();
+
+declare global {
+    interface Window { 
+        gameStart: Function; 
+        gameStop: Function; 
+    }
+}
