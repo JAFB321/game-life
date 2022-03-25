@@ -4,6 +4,7 @@
   "description": " John Horton Conway \"Game of life\" simulator\"",
   "scripts": {
     "start": "npm run build && npm run serve",
+    "start:watch": "npm run build && npm run serve",
     "serve": "http-server ./dist/ -a localhost -p 5500 -o",
     "build": "tsc && npm run build:copy-files",
     "build:watch": "npm run build:copy-files && tsc --watch",
