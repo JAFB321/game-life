@@ -1,5 +1,6 @@
 import { GameBoard } from "./core/GameBoard.js";
 import { GameEngine } from "./core/GameEngine.js";
+import { GraphicsController } from "./graphics/GraphicsController.js";
 import { Point } from "./structures/CartesianPlane.js";
 
 interface EvolutionState {
@@ -15,6 +16,7 @@ export class GameOfLife {
 
     private gameBoard: GameBoard;
     private engine: GameEngine;
+    private graphics: GraphicsController;
 
     private evolution: EvolutionState = {
         isEvolving: false,
@@ -25,9 +27,10 @@ export class GameOfLife {
         }
     }
 
-    constructor(){
+    constructor(graphics: GraphicsController){
         this.gameBoard = new GameBoard();
         this.engine = new GameEngine();
+        this.graphics = graphics;
     }
     
     bornCell(point: Point){
