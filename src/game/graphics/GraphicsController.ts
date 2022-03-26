@@ -53,7 +53,7 @@ export class GraphicsController{
     constructor(){
         this.config = {
             cells: {
-                size: 50,
+                size: 20,
             },
             grid: {
                 lineWidth: 0.8,
