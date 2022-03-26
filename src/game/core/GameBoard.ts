@@ -66,6 +66,21 @@ export class GameBoard {
         }
     }
 
+    public getCells(){
+        const cells = [];
+
+        for(let x = this._limits.x.min; x < this._limits.x.max+1; x++){
+            for(let y = this._limits.y.min; y < this._limits.y.max+1; y++){
+                const isAlive = this.board.getPoint({x, y});
+                if(!!isAlive) {
+                    cells.push({x, y});
+                }
+            }
+        }
+
+        return cells;
+    }
+
     resetCells(){
         this.board.resetPlane();
         this.resetLimits();
