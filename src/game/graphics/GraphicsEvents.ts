@@ -1,24 +1,38 @@
+import { Point } from '../structures/CartesianPlane.js';
+import {EventTypes, onCellBorn, onCellKill, onCellToggle} from './EventTypes.js';
 
-enum GraphicsEvents{
-    onBornCell = a
-}
+export class GraphicsEvents {
 
-export interface GraphicsEventsObserver {
-
-}
-
-export class GraphicsEventsObservable {
-    private observers: GraphicsEventsObserver[] = [];
-
-    public subscribe(obs: GraphicsEventsObserver){
-        this.observers.push(obs);
+    private events : {
+        onCellBorn: Function[],
+        onCellKill: Function[],
+        onCellToggle: Function[]
     }
 
-    public unsubscribe(obs: GraphicsEventsObserver){
-        this.observers = this.observers.filter(o => o !== obs);
+    constructor(){
+        this.events = {
+            onCellBorn: [],
+            onCellKill: [],
+            onCellToggle: []
+        }
+    }
+    public on(event: onCellBorn | onCellKill | onCellToggle){
+        this.events[event.type].push(event.callback);
     }
 
-    public notify(event: GraphicsEvents, payload?: any){
-        this.observers.forEach(o => o.onGraphicsEvent(event));
+    private emit(event: EventTypes, payload: any){
+        this.events[event].forEach(callback => callback(payload));
+    }
+    
+    public emitCellBorn(point: Point){
+        this.emit("onCellBorn", point);
+    }
+
+    public emitCellKill(point: Point){
+        this.emit("onCellKill", point);
+    }
+
+    public emitCellToggle(point: Point){
+        this.emit("onCellToggle", point);
     }
 }
