@@ -1,4 +1,5 @@
 import { GameOfLife } from './game/GameOfLife.js'
+import { GraphicsController } from './game/graphics/GraphicsController.js';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#gameboard-main');
 const ctx = canvas?.getContext('2d') || new CanvasRenderingContext2D();
@@ -35,7 +36,7 @@ const clearCells = () => {
 }
 // ---
 
-var game = new GameOfLife();
+var game = new GameOfLife(new GraphicsController());
 
 // // Testing patern
 // game.bornCell(100-25,100-25);
