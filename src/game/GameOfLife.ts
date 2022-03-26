@@ -45,8 +45,15 @@ export class GameOfLife {
         this.gameBoard.resetCells();
     }
 
+    /**
+     * Deprecated
+     */
     getBoard(){
         return this.gameBoard.getBoard();
+    }
+    
+    getCells(){
+        return this.gameBoard.getCells();
     }
 
     setConfig(options: {
@@ -72,6 +79,7 @@ export class GameOfLife {
 
         const intervalID = window.setInterval(() => {   
             const nextGen = this.evolveGeneration();
+            this.graphics.setCells(nextGen.getCells());
             onNextGeneration(nextGen);
         }, delay);
 
@@ -98,7 +106,9 @@ export class GameOfLife {
             
             const intervalID = window.setInterval(() => {
                 this.evolveGeneration();
-                onNextGeneration(this.gameBoard);
+                const nextGen = this.evolveGeneration();
+                this.graphics.setCells(nextGen.getCells());
+                onNextGeneration(nextGen);
             }, delay);
             
             this.evolution.isEvolving = true;
