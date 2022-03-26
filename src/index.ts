@@ -1,4 +1,5 @@
-import { GameLife } from './game/core/GameLife.js'
+import { GameOfLife } from './game/GameOfLife.js'
+import { GraphicsController } from './game/graphics/GraphicsController.js';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#gameboard-main');
 const ctx = canvas?.getContext('2d') || new CanvasRenderingContext2D();
@@ -35,7 +36,7 @@ const clearCells = () => {
 }
 // ---
 
-var game = new GameLife();
+var game = new GameOfLife(new GraphicsController());
 
 // // Testing patern
 // game.bornCell(100-25,100-25);
@@ -51,7 +52,7 @@ game.bornCell({x: 12,y: 9});
 
 drawGrid();
 
-game.startEvolution({
+game.setConfig({
     onNextGeneration: (board) => {
 
         clearCells();
@@ -83,7 +84,7 @@ game.startEvolution({
 
         for (let x = 0; x < size.point2.x; x++) {
             for (let y = 0; y < size.point2.y; y++) {
-                const isAlive = board.getPoint({x, y});
+                const isAlive = board.getCell({x, y});
         
                 if(isAlive){
                     const cell_x = row_size*x+row_gap+x_offset+1;
@@ -95,8 +96,10 @@ game.startEvolution({
         }
 
     },
-    delayDuration: 500
+    delay: 100
 });
+
+game.startEvolution();
 
 window.gameStart = () => game.resumeEvolution();
 window.gameStop = () => game.pauseEvolution();

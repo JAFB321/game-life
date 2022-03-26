@@ -7,7 +7,6 @@
         {
             "type": "pwa-msedge",
             "name": "open index.html",
-            "preLaunchTask": "npm: build",
             "request": "launch",
             "url": "http://127.0.0.1:5500/dist/index.html",
             "webRoot": "${workspaceFolder}"
