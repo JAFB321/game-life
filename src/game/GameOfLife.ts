@@ -12,11 +12,11 @@ interface EvolutionState {
     }
 }
 
-export class GameOfLife {
+export class GameOfLife<GraphicsType extends GraphicsController> {
 
     private gameBoard: GameBoard;
     private engine: GameEngine;
-    private graphics: GraphicsController;
+    public readonly graphics: GraphicsType;
 
     private evolution: EvolutionState = {
         isEvolving: false,
@@ -27,7 +27,7 @@ export class GameOfLife {
         }
     }
 
-    constructor(graphics: GraphicsController){
+    constructor(graphics: GraphicsType){
         this.gameBoard = new GameBoard();
         this.engine = new GameEngine();
         this.graphics = graphics;
