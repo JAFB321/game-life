@@ -34,30 +34,30 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         this.initEvents();
     }
     
-    bornCell(point: Point){
+    public bornCell(point: Point){
         this.gameBoard.setCell(point, true);
     }
 
-    killCell(point: Point){
+    public killCell(point: Point){
         this.gameBoard.setCell(point, false);
     }
 
-    exterminateCells(){
+    public exterminateCells(){
         this.gameBoard.resetCells();
     }
 
     /**
      * Deprecated
      */
-    getBoard(){
+    public getBoard(){
         return this.gameBoard.getBoard();
     }
     
-    getCells(){
+    public getCells(){
         return this.gameBoard.getCells();
     }
 
-    setConfig(options: {
+    public setConfig(options: {
         onNextGeneration?: (board: GameBoard) => void,
         delay?: number
     }){
@@ -68,7 +68,7 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         config.delay = delay || config.delay;
     }
 
-    startEvolution(){
+    public startEvolution(){
         const { isEvolving, config } = this.evolution;
         const { onNextGeneration, delay } = config;
         
@@ -89,7 +89,7 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
 
     }
 
-    pauseEvolution(){
+    public pauseEvolution(){
         const { isEvolving, intervalID } = this.evolution;
          
         if(isEvolving && intervalID !== -1){
@@ -99,7 +99,7 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         }
     }
 
-    resumeEvolution(){
+    public resumeEvolution(){
         const { isEvolving, config } = this.evolution;
         
         if(!isEvolving){
