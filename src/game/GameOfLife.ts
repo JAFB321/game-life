@@ -31,6 +31,7 @@ export class GameOfLife {
         this.gameBoard = new GameBoard();
         this.engine = new GameEngine();
         this.graphics = graphics;
+        this.initEvents();
     }
     
     bornCell(point: Point){
@@ -121,4 +122,28 @@ export class GameOfLife {
         return this.gameBoard = newGeneration;
     }
 
+    private initEvents(){
+        const {events} = this.graphics;
+
+        events.on({
+            type:"onCellBorn",
+            callback: (point: Point) => {
+                this.bornCell(point);
+            }
+        });
+
+        events.on({
+            type:"onCellKill",
+            callback: (point: Point) => {
+                this.killCell(point);
+            }
+        });
+
+        events.on({
+            type:"onCellToggle",
+            callback: (point: Point) => {
+                // this.gameBoard.toggleCell(point);
+            }
+        })
+    }
 }
