@@ -1,10 +1,12 @@
 import { GameBoard } from "../../core/GameBoard.js";
 import { GraphicsController } from "../GraphicsController.js";
+import { CanvasConfig, CanvasConfigParams } from "./config.js";
 
 export class CanvasController extends GraphicsController {
 
     private canvas: HTMLCanvasElement;
     private canvasContext: CanvasRenderingContext2D;
+    protected config: CanvasConfig;
 
     constructor(canvas: HTMLCanvasElement){
         super();
@@ -13,6 +15,28 @@ export class CanvasController extends GraphicsController {
 
         if(!this.canvas || !this.canvas.getContext("2d"))
           throw new Error("Canvas cannot be null");
+
+        this.config = {
+        cells: {
+            size: 20,
+        },
+        grid: {
+            lineWidth: 0.8,
+            offset: 0.5,
+        },
+        board: {
+            height: 900,
+            width: 1900,
+            offset_x: 0,
+            offset_y: 0,
+            zoom: 100,
+        },
+        colors: {
+            background: '#22272e',
+            cell: '#ffffff',
+            grid: '#626567'
+        }
+    }
     }
 
     public render(){
@@ -74,5 +98,37 @@ export class CanvasController extends GraphicsController {
 
         ctx.fillStyle = background;
         ctx.fillRect(0, 0, width, height);
+    }
+
+    private applyTransforms(){
+        const ctx = this.canvasContext;
+        const {board, grid} = this.config;
+        const {offset_x, offset_y, zoom} = board;
+        const {offset} = grid;
+
+        ctx.translate(offset_x, offset_y);
+        ctx.scale(zoom, zoom);
+        ctx.translate(offset, offset);
+    }
+
+    public setConfig({board, cells, colors, grid}: CanvasConfigParams){
+        this.config = {
+            board: {
+                ...this.config.board,
+                ...board,
+            },
+            cells: {
+                ...this.config.cells,
+                ...cells,
+            },
+            colors: {
+                ...this.config.colors,
+                ...colors,
+            },
+            grid: {
+                ...this.config.grid,
+                ...grid,
+            }
+        };
     }
 }
