@@ -46,12 +46,13 @@ export class CanvasController extends GraphicsController {
     }
 
     private renderCells(){
+        const ctx = this.canvasContext;
         const {cells, colors, grid} = this.config;
         const {offset} = grid;
         const {size} = cells;
         const {cell: color} = colors;
 
-        const aliveCells = this.aliveCells;
+        const {aliveCells} = this;
 
         for (const point of aliveCells) {
             const {x, y} = point;
@@ -59,18 +60,19 @@ export class CanvasController extends GraphicsController {
             const cell_x = x*(size+offset*4)+offset*3;
             const cell_y = y*(size+offset*4)+offset*3;
 
-            this.canvasContext.fillStyle = color;
-            this.canvasContext.fillRect(cell_x, cell_y, size, size);            
+            ctx.fillStyle = color;
+            ctx.fillRect(cell_x, cell_y, size, size);            
         }
             
     }
 
     private renderBackground(){
+        const ctx = this.canvasContext;
         const {board, colors} = this.config;
         const {width, height} = board;
         const {background} = colors;
 
-        this.canvasContext.fillStyle = background;
-        this.canvasContext.fillRect(0, 0, width, height);
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, width, height);
     }
 }
