@@ -1,5 +1,5 @@
 import { GameOfLife } from './game/GameOfLife.js'
-import { CanvasController } from './game/graphics/canvas/canvasController.js';
+import { CanvasController } from './game/graphics/canvas/CanvasController.js';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#gameboard-main');
 
