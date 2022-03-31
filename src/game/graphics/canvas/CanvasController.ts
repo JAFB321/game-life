@@ -16,27 +16,7 @@ export class CanvasController extends GraphicsController {
         if(!this.canvas || !this.canvas.getContext("2d"))
           throw new Error("Canvas cannot be null");
 
-        this.config = {
-        cells: {
-            size: 20,
-        },
-        grid: {
-            lineWidth: 0.8,
-            offset: 0.5,
-        },
-        board: {
-            height: 900,
-            width: 1900,
-            offset_x: 0,
-            offset_y: 0,
-            zoom: 100,
-        },
-        colors: {
-            background: '#22272e',
-            cell: '#ffffff',
-            grid: '#626567'
-        }
-    }
+        this.config = defaultCanvasConfig;
     }
 
     public render(){
