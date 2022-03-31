@@ -77,6 +77,7 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         }
         
         onNextGeneration(this.gameBoard);
+        this.graphics.setCells(this.gameBoard.getCells());
 
         const intervalID = window.setInterval(() => {   
             const nextGen = this.evolveGeneration();
