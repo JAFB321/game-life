@@ -17,12 +17,19 @@ function test(){
     game.bornCell({x: 12,y: 9});
 
     game.setConfig({
-        onNextGeneration: () => console.log('next generation'),
-        delay: 100
+        onNextGeneration: () => {},
+        delay: 1000
         
     });
     game.startEvolution();
 
+    game.graphics.setConfig({
+        board: {
+            // zoom: 100,
+            offset_x: 1,
+            offset_y: 1
+        }
+    })
     window.gameStart = () => game.resumeEvolution();
     window.gameStop = () => game.pauseEvolution();
 }
