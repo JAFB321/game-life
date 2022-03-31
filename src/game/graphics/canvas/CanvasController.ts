@@ -1,6 +1,6 @@
 import { GameBoard } from "../../core/GameBoard.js";
 import { GraphicsController } from "../GraphicsController.js";
-import { CanvasConfig, CanvasConfigParams } from "./config.js";
+import { CanvasConfig, CanvasConfigParams, defaultCanvasConfig } from "./config.js";
 
 export class CanvasController extends GraphicsController {
 
@@ -20,6 +20,7 @@ export class CanvasController extends GraphicsController {
     }
 
     public render(){
+        this.applyTransforms();
         this.renderBackground();
         this.renderCells();
         this.renderGrid();
@@ -51,7 +52,8 @@ export class CanvasController extends GraphicsController {
 
     private renderCells(){
         const ctx = this.canvasContext;
-        const {cells, colors, grid} = this.config;
+        const {cells, colors, grid, board} = this.config;
+        const {offset_x, offset_y} = board;
         const {offset} = grid;
         const {size} = cells;
         const {cell: color} = colors;
@@ -61,8 +63,8 @@ export class CanvasController extends GraphicsController {
         for (const point of aliveCells) {
             const {x, y} = point;
 
-            const cell_x = x*(size+offset*4)+offset*3;
-            const cell_y = y*(size+offset*4)+offset*3;
+            const cell_x = (x+offset_x)*(size+offset*4)+offset*3;
+            const cell_y = (y+offset_y)*(size+offset*4)+offset*3;
 
             ctx.fillStyle = color;
             ctx.fillRect(cell_x, cell_y, size, size);            
@@ -82,13 +84,19 @@ export class CanvasController extends GraphicsController {
 
     private applyTransforms(){
         const ctx = this.canvasContext;
-        const {board, grid} = this.config;
+        const {board} = this.config;
         const {offset_x, offset_y, zoom} = board;
-        const {offset} = grid;
+        
+        const currentTransform = ctx.getTransform();
+        const zoomChanged = currentTransform.a !== zoom/100;
+        // const offsetChanged = currentTransform.e !== offset_x || currentTransform.f !== offset_y;
 
-        ctx.translate(offset_x, offset_y);
-        ctx.scale(zoom, zoom);
-        ctx.translate(offset, offset);
+        // Only transform if config changed
+        if(zoomChanged /*|| offsetChanged*/){
+            ctx.reset();
+            ctx.scale(zoom/100, zoom/100);
+            // ctx.translate(offset_x, offset_y);
+        }
     }
 
     public setConfig({board, cells, colors, grid}: CanvasConfigParams){
@@ -110,5 +118,11 @@ export class CanvasController extends GraphicsController {
                 ...grid,
             }
         };
+    }
+}
+
+declare global {
+    interface CanvasRenderingContext2D { 
+        reset(): void;
     }
 }
