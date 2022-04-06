@@ -18,20 +18,38 @@ function test(){
 
     game.setConfig({
         onNextGeneration: () => {},
-        delay: 1000
+        delay: 50
         
     });
     game.startEvolution();
+    
+    // setTimeout(() => {
+    //     game.pauseEvolution();
+    // }, 10500);
 
     game.graphics.setConfig({
         board: {
-            // zoom: 100,
-            offset_x: 1,
-            offset_y: 1
+ 
+        },
+        colors:{
+            background: '#222'
         }
-    })
+    });
+
+
     window.gameStart = () => game.resumeEvolution();
     window.gameStop = () => game.pauseEvolution();
+
+    // let n = 100;
+    // setInterval(() => {
+    //     n+= 0.8;
+    //     game.graphics.setConfig({
+    //         board: {
+    //             offset_x: n,
+    //             offset_y: n
+    //         }
+    //     });
+    // }, 1000);
 }
 
 test();
