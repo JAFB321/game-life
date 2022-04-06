@@ -4,7 +4,7 @@ export interface CanvasConfig {
     },
     grid: {
         lineWidth: number,
-        offset: number,
+        gap: number,
     }
     board: {
         height: number,
@@ -26,7 +26,7 @@ export interface CanvasConfigParams{
     },
     grid?: {
         lineWidth?: number,
-        offset?: number,
+        gap?: number,
     }
     board?: {
         height?: number,
@@ -48,7 +48,7 @@ export const defaultCanvasConfig: CanvasConfig = {
     },
     grid: {
         lineWidth: 0.8,
-        offset: 0.5,
+        gap: 0.5,
     },
     board: {
         height: 900,
