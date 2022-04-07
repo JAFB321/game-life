@@ -1,4 +1,5 @@
 import { CanvasConfig } from "../config";
+import { CanvasPlugin } from "./CanvasPlugin";
 
 interface DragState {
     isDragging: boolean;
@@ -8,14 +9,12 @@ interface DragState {
     onZoom?: (zoom: number) => any;
 }
 
-export class DraggableCanvas {
-    private canvas: HTMLCanvasElement;
+export class Draggable extends CanvasPlugin {
+    
     private state: DragState;
-    private readonly canvasConfig: CanvasConfig; 
 
     constructor(canvas: HTMLCanvasElement, canvasConfig: CanvasConfig) {
-        this.canvas = canvas;
-        this.canvasConfig = canvasConfig;
+        super(canvas, canvasConfig);
         this.state = {
             isDragging: false,
             lastX: 0,
