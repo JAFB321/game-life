@@ -1,16 +1,21 @@
+import { CanvasConfig } from "./config";
+
 interface DragState {
     isDragging: boolean;
     lastX: number;
     lastY: number;
-    onDrag?: (x: number, y: number) => void;
+    onDrag?: (x: number, y: number) => any;
+    onZoom?: (zoom: number) => any;
 }
 
 export class DraggableCanvas {
     private canvas: HTMLCanvasElement;
     private state: DragState;
+    private readonly canvasConfig: CanvasConfig; 
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, canvasConfig: CanvasConfig) {
         this.canvas = canvas;
+        this.canvasConfig = canvasConfig;
         this.state = {
             isDragging: false,
             lastX: 0,
@@ -18,9 +23,17 @@ export class DraggableCanvas {
         }
     }
 
-    public init(onDrag: (x: number, y: number) => void){
+    public onDrag(callback: (x: number, y: number) => any){
+        this.state.onDrag = callback;
+    }
+
+    public onZoom(callback: (zoom: number) => any){
+        this.state.onZoom = callback;
+    }
+
+    public init(){
         const canvas = this.canvas;
-        this.state.onDrag = onDrag;
+        const {onDrag, onZoom} = this.state;
 
         canvas.onmousedown = (ev) => {
             const {state} = this;
@@ -57,13 +70,19 @@ export class DraggableCanvas {
             const x = ev.x - lastX;
             const y = ev.y - lastY;
 
-            onDrag(x, y);
+            onDrag && onDrag(x, y);
 
             this.state = {
                 ...state,
                 lastX: ev.x,
                 lastY: ev.y,
             }
+        }
+
+        canvas.onwheel = (ev) => {
+            ev.preventDefault();
+            const delta = Math.sign(ev.deltaY);
+            onZoom && onZoom(delta);
         }
     }
 }
