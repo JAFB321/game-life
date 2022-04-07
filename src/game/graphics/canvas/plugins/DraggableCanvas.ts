@@ -1,4 +1,4 @@
-import { CanvasConfig } from "./config";
+import { CanvasConfig } from "../config";
 
 interface DragState {
     isDragging: boolean;
