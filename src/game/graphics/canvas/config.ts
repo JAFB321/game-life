@@ -47,7 +47,7 @@ export const defaultCanvasConfig: CanvasConfig = {
         size: 20,
     },
     grid: {
-        lineWidth: 0.8,
+        lineWidth: 1,
         gap: 0.5,
     },
     board: {
