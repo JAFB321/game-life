@@ -1,13 +1,14 @@
 import { GameBoard } from "../../core/GameBoard.js";
 import { GraphicsController } from "../GraphicsController.js";
 import { CanvasConfig, CanvasConfigParams, defaultCanvasConfig } from "./config.js";
+import { CanvasPlugin } from "./plugins/CanvasPlugin.js";
 import { Draggable } from "./plugins/Draggable.js";
 
 export class CanvasController extends GraphicsController {
 
     private canvas: HTMLCanvasElement;
     private canvasContext: CanvasRenderingContext2D;
-    private draggable: Draggable;
+    private plugins: CanvasPlugin[];
     protected config: CanvasConfig;
 
     constructor(canvas: HTMLCanvasElement){
@@ -19,9 +20,9 @@ export class CanvasController extends GraphicsController {
           throw new Error("Canvas cannot be null");
 
         this.config = defaultCanvasConfig;
-        this.draggable = new Draggable(this.canvas, this.config);
+        this.plugins = [];
 
-        this.initDrag();
+        this.initPlugins();
     }
 
     public render(){
@@ -126,8 +127,13 @@ export class CanvasController extends GraphicsController {
         }
     }
 
-    private initDrag(){
-        this.draggable.onDrag((x, y) => {
+    private initPlugins(){
+        const {canvas, config} = this;
+        
+        // Draggable and Zoomable canvas
+        const draggable = new Draggable(canvas, config);
+
+        draggable.onDrag((x, y) => {
             const { 
                 board: {
                     offset_x,
@@ -145,7 +151,7 @@ export class CanvasController extends GraphicsController {
             window.requestAnimationFrame(() => this.render());
         });
 
-        this.draggable.onZoom((zoom) => {
+        draggable.onZoom((zoom) => {
             const {board} = this.config;
 
             let newZoom = board.zoom-(zoom*board.zoom/20);
@@ -162,7 +168,8 @@ export class CanvasController extends GraphicsController {
             window.requestAnimationFrame(() => this.render());
         });
 
-        this.draggable.init();       
+        this.plugins.push(draggable);
+        this.plugins.forEach(plugin => plugin.init());
     }
 
     public setConfig({board, cells, colors, grid}: CanvasConfigParams){

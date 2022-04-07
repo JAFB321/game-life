@@ -8,4 +8,6 @@ export class CanvasPlugin {
         this.canvas = canvas;
         this.canvasConfig = canvasConfig;
     }
+    public init(){}
+    public dispose(){}
 }
