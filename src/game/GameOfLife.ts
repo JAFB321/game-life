@@ -106,8 +106,8 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         if(!isEvolving){
             const { delay, onNextGeneration } = config;
             
+            this.evolveGeneration();
             const intervalID = window.setInterval(() => {
-                this.evolveGeneration();
                 const nextGen = this.evolveGeneration();
                 this.graphics.setCells(nextGen.getCells());
                 onNextGeneration(nextGen);

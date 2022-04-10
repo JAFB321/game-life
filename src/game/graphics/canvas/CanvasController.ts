@@ -1,11 +1,18 @@
 import { GameBoard } from "../../core/GameBoard.js";
+import { Point } from "../../structures/CartesianPlane.js";
 import { GraphicsController } from "../GraphicsController.js";
+import { CanvasPainter, CanvasPainterComponent } from "./CanvasPainter.js";
 import { CanvasConfig, CanvasConfigParams, defaultCanvasConfig } from "./config.js";
+import { CanvasPlugin } from "./decorators/CanvasDecoratorBase.js";
+import { Cells } from "./decorators/Cells.js";
+import { Draggable } from "./decorators/Draggable.js";
 
 export class CanvasController extends GraphicsController {
 
-    private canvas: HTMLCanvasElement;
-    private canvasContext: CanvasRenderingContext2D;
+    private painter: CanvasPainter;
+
+    protected canvas: HTMLCanvasElement;
+    protected canvasContext: CanvasRenderingContext2D;
     protected config: CanvasConfig;
 
     constructor(canvas: HTMLCanvasElement){
@@ -13,91 +20,87 @@ export class CanvasController extends GraphicsController {
         this.canvas = canvas;
         this.canvasContext = canvas.getContext("2d") || new CanvasRenderingContext2D();
 
-        if(!this.canvas || !this.canvas.getContext("2d"))
-          throw new Error("Canvas cannot be null");
+        if (!this.canvas || !this.canvas.getContext("2d"))
+            throw new Error("Canvas cannot be null");
 
         this.config = defaultCanvasConfig;
-    }
-
-    public render(){
-        this.applyTransforms();
-        this.renderBackground();
-        this.renderCells();
-        this.renderGrid();
-    }
-
-    private renderGrid(){
-        const ctx = this.canvasContext;
-        const {board, grid, colors, cells} = this.config;
-        const {size} = cells;
-        const {width, height} = board;
-        const {lineWidth, offset} = grid;
-        const {grid: gridColor} = colors;
         
-        // Grid
-        ctx.moveTo(offset,offset);
-        ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = gridColor;
-
-        for (let x = offset; x < width; x+=size+offset*4) {
-            ctx.moveTo(x,offset);
-            ctx.lineTo(x, height);
-        }
-        for (let y = offset; y < height; y+=size+offset*4) {
-            ctx.moveTo(offset, y);
-            ctx.lineTo(width, y);
-        }
-        ctx.stroke();
+        this.painter = new CanvasPainterComponent(canvas, this.canvasContext);
     }
 
-    private renderCells(){
-        const ctx = this.canvasContext;
-        const {cells, colors, grid, board} = this.config;
-        const {offset_x, offset_y} = board;
-        const {offset} = grid;
-        const {size} = cells;
-        const {cell: color} = colors;
+    protected render(){
+        // this.applyTransforms();
+        this.painter.paint(this.config, this.aliveCells);
+    }
 
-        const {aliveCells} = this;
 
-        for (const point of aliveCells) {
-            const {x, y} = point;
 
-            const cell_x = (x+offset_x)*(size+offset*4)+offset*3;
-            const cell_y = (y+offset_y)*(size+offset*4)+offset*3;
+    // private applyTransforms(){
+    //     const ctx = this.canvasContext;
+    //     const {board} = this.config;
+    //     const {offset_x, offset_y, zoom} = board;
+        
+    //     const newZoom = zoom/100;
 
-            ctx.fillStyle = color;
-            ctx.fillRect(cell_x, cell_y, size, size);            
-        }
+    //     const currentTransform = ctx.getTransform();
+    //     const zoomChanged = currentTransform.a !== newZoom;
+    //     const offsetChanged = currentTransform.e !== offset_x || currentTransform.f !== offset_y;
+
+    //     // Only transform if config changed
+    //     if(zoomChanged || offsetChanged){
+    //         ctx.reset();
+    //         ctx.scale(newZoom, newZoom);
+    //         ctx.translate(offset_x, offset_y);
+    //     }
+    // }
+
+    // private initPlugins(){
+    //     const {canvas, config} = this;
+        
+    //     // Draggable and Zoomable canvas
+    //     const draggable = new Draggable(canvas, config);
+
+    //     draggable.onDrag((offset_x, offset_y) => {
+    //         // console.log(this.config.board);
             
-    }
+    //         this.setConfig({
+    //             board: {
+    //                 offset_x,
+    //                 offset_y
+    //             }
+    //         });
+    //         window.requestAnimationFrame(() => this.render());
+    //     });
 
-    private renderBackground(){
-        const ctx = this.canvasContext;
-        const {board, colors} = this.config;
-        const {width, height} = board;
-        const {background} = colors;
+    //     draggable.onZoom((zoom) => {
+    //         const {board} = this.config;
 
-        ctx.fillStyle = background;
-        ctx.fillRect(0, 0, width, height);
-    }
+    //         let newZoom = board.zoom-(zoom*board.zoom/20);
+    //         newZoom = Math.min(newZoom, 200);
+    //         newZoom = Math.max(newZoom, 50);
+    //         newZoom = Math.round(newZoom);
 
-    private applyTransforms(){
-        const ctx = this.canvasContext;
-        const {board} = this.config;
-        const {offset_x, offset_y, zoom} = board;
+    //         this.setConfig({
+    //             board:{
+    //                 zoom: newZoom,
+    //             }
+    //         });
+
+    //         window.requestAnimationFrame(() => this.render());
+    //     });
+
+    //     // Cells born and died
+    //     const cells = new Cells(canvas, config);
         
-        const currentTransform = ctx.getTransform();
-        const zoomChanged = currentTransform.a !== zoom/100;
-        // const offsetChanged = currentTransform.e !== offset_x || currentTransform.f !== offset_y;
+    //     cells.onCellHover(({x,y}) => {
+    //         this.aliveCells = [...this.aliveCells, {x,y, type: "alive"}];
+    //         this.render();
+    //     })
 
-        // Only transform if config changed
-        if(zoomChanged /*|| offsetChanged*/){
-            ctx.reset();
-            ctx.scale(zoom/100, zoom/100);
-            // ctx.translate(offset_x, offset_y);
-        }
-    }
+    //     this.plugins.push(draggable);
+    //     // this.plugins.push(cells);
+    //     this.plugins.forEach(plugin => plugin.init());
+    // }
 
     public setConfig({board, cells, colors, grid}: CanvasConfigParams){
         this.config = {
