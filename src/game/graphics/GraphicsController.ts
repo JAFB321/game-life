@@ -17,7 +17,7 @@ export class GraphicsController{
         this.render();
     };
 
-    public render(): void{
+    protected render(): void{
         console.log('render');
     }
 }
