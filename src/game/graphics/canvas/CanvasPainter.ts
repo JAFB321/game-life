@@ -1,14 +1,7 @@
-import { Point } from "../../structures/CartesianPlane";
-import { CanvasConfig } from "./config";
+import { Point } from "../../structures/CartesianPlane.js";
+import { CanvasConfig } from "./config.js";
 
-export interface CanvasPainter {
-    readonly canvas: HTMLCanvasElement;
-    readonly canvasContext: CanvasRenderingContext2D;
-
-    paint(config: CanvasConfig, aliveCells: Point[]): void;   
-}
-
-export class CanvasPainterComponent implements CanvasPainter{
+export class CanvasPainter{
     
     public canvas: HTMLCanvasElement;
     public canvasContext: CanvasRenderingContext2D;
@@ -18,42 +11,41 @@ export class CanvasPainterComponent implements CanvasPainter{
         this.canvasContext = canvasContext;
     }
 
-    paint(config: CanvasConfig, aliveCells: Point[]): void {
+    paint(config: CanvasConfig, aliveCells: Point[], selectedCells: Point[]): void {
+        this.applyTransforms(config);
         this.renderBackground(config);
-        this.renderCells(config, aliveCells);
+        this.renderCells(config, aliveCells, selectedCells);
         this.renderGrid(config);
     }
     
     private renderGrid(config: CanvasConfig){
         const ctx = this.canvasContext;
         const {board, grid, colors, cells} = config;
-        const {size} = cells;
         const {width, height, offset_x, offset_y, zoom} = board;
-        const {lineWidth, gap} = grid;
         const {grid: gridColor} = colors;
         
-        // Grid
-        ctx.moveTo(gap,gap);
-        // ctx.lineWidth = lineWidth;
-        // ctx.lineWidth = lineWidth*(zoom/100) < 0.8 ? 0.8+0.8*(zoom/100) : lineWidth;
+        // Scale grid to zoom
+        let {size} = cells;
+        let {lineWidth, gap} = grid;
+        
+        size = size * zoom/100;        
+        size = Math.ceil(size);
+        
+        // Paint Grid
         ctx.lineWidth = (lineWidth);
         ctx.strokeStyle = gridColor;
 
-        // console.log(ctx.lineWidth);
-        // console.log(zoom);
-        // console.log(ctx.getTransform());
-        
 
         const cell_size = size+gap*4;
-
-        for (let x = gap; x < width*2+(Math. abs(offset_x)); x+=cell_size) {
+        
+        for (let x = 0; x < width*2+(Math. abs(offset_x)); x+=cell_size) {
             ctx.moveTo(x,gap-height-offset_y);
             ctx.lineTo(x, height*2-offset_y);
             
             ctx.moveTo(-x+gap*2,gap-height-offset_y);
             ctx.lineTo(-x+gap*2, height*2-offset_y);
         }
-        for (let y = gap; y < height*2+(Math. abs(offset_y)); y+=cell_size) {
+        for (let y = 0; y < height*2+(Math. abs(offset_y)); y+=cell_size) {
             ctx.moveTo(gap-width-offset_x, y);
             ctx.lineTo(width*2-offset_x, y);
 
@@ -63,15 +55,32 @@ export class CanvasPainterComponent implements CanvasPainter{
         ctx.stroke();
     }
 
-    private renderCells(config: CanvasConfig, aliveCells: Point[]){
+    private renderCells(config: CanvasConfig, aliveCells: Point[], selectedCells: Point[]){
         const ctx = this.canvasContext;
         const {cells, colors, grid, board} = config;
-        const {offset_x, offset_y} = board;
-        const {gap} = grid;
-        const {size} = cells;
+        const {zoom} = board;
         const {cell: color} = colors;
+        
+        // Scale cell size to zoom
+        let {gap} = grid;
+        let {size} = cells;
+
+        size = size * zoom/100;
+        size = Math.ceil(size);
+
+        const cell_size = size+gap*4;
 
         for (const point of aliveCells) {
+            const {x, y} = point;
+
+            const cell_x = (x)*(cell_size)+gap*2;
+            const cell_y = (y)*(cell_size)+gap*2;
+
+            ctx.fillStyle = color;
+            ctx.fillRect(cell_x, cell_y, size, size);            
+        }
+        
+        for (const point of selectedCells) {
             const {x, y} = point;
 
             const cell_x = (x)*(size+gap*4)+gap*3;
@@ -80,7 +89,6 @@ export class CanvasPainterComponent implements CanvasPainter{
             ctx.fillStyle = color;
             ctx.fillRect(cell_x, cell_y, size, size);            
         }
-            
     }
 
     private renderBackground(config: CanvasConfig){
@@ -91,5 +99,27 @@ export class CanvasPainterComponent implements CanvasPainter{
 
         ctx.fillStyle = background;
         ctx.fillRect(0-offset_x, 0-offset_y, width, height);
+    }
+
+    private applyTransforms(config: CanvasConfig){
+        const ctx = this.canvasContext;
+        const {board} = config;
+        const {offset_x, offset_y, zoom} = board;
+        
+        const newZoom = zoom/100;
+
+        const currentTransform = ctx.getTransform();
+        const zoomChanged = currentTransform.a !== newZoom;
+        const offsetChanged = currentTransform.e !== offset_x || currentTransform.f !== offset_y;
+
+        // Only transform if config changed
+        if(zoomChanged || offsetChanged){
+            ctx.reset();
+            // ctx.scale(newZoom, newZoom); Deprecated
+            ctx.translate(offset_x, offset_y);            
+        }
+
+        let startOffset = 0.5;
+        ctx.translate(startOffset, startOffset);
     }
 }
