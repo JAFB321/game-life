@@ -4,7 +4,7 @@ import { GraphicsController } from "../GraphicsController.js";
 import { CanvasPainter } from "./CanvasPainter.js";
 import { CanvasConfig, CanvasConfigParams, defaultCanvasConfig } from "./config.js";
 import { CanvasPlugin } from "./plugins/CanvasPlugin.js";
-import { Cells } from "./plugins/Cells.js";
+import { SelectedCells } from "./plugins/SelectedCells.js";
 import { Draggable } from "./plugins/Draggable.js";
 
 export class CanvasController extends GraphicsController {
@@ -39,11 +39,30 @@ export class CanvasController extends GraphicsController {
     }
 
     private initPlugins(){
-        const draggable = new Draggable(this.canvas, () => this.getConfig(), (config) => this.setConfig(config));
+
+        const draggable = new Draggable(
+            this.canvas,
+            () => this.getConfig(),
+            (config) => this.setConfig(config)
+        );
+
+        const selectedCells = new SelectedCells(
+            this.canvas,
+            () => this.getConfig(),
+            (config) => this.setConfig(config),
+            () => this.selectedCells,
+            (selectedCells) => this.setSelectedCells(selectedCells)
+        );
 
         this.plugins = [
-            draggable
+            draggable,
+            selectedCells
         ]
+    }
+
+    protected setSelectedCells(selectedCells: Point[]){
+        this.selectedCells = selectedCells;
+        this.render();
     }
 
     public getConfig(): CanvasConfig {
