@@ -1,5 +1,6 @@
 import { GameOfLife } from './game/GameOfLife.js'
 import { CanvasController } from './game/graphics/canvas/CanvasController.js';
+import { performanceCanvas } from './test/performance.js';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#gameboard-main');
 const info = document.querySelector('.floating-info');
@@ -8,7 +9,9 @@ const info = document.querySelector('.floating-info');
 function test(){   
     if(!info) return;
     if(!canvas) return;
-    
+
+    performanceCanvas(canvas);
+
     const graphics = new CanvasController(canvas);
     const game = new GameOfLife(graphics);
 
@@ -25,13 +28,19 @@ function test(){
     });
     game.startEvolution();
     
-    // setTimeout(() => {
-    //     game.pauseEvolution();
-    // }, 10500);
+    setTimeout(() => {
+        game.pauseEvolution();
+    }, 10500);
 
     game.graphics.setConfig({
         board: {
- 
+            // zoom: 150
+        },
+        grid: {
+            gap: 0.5
+        },
+        cells: {
+            size: 20
         },
         colors:{
             background: '#222'
