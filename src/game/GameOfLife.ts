@@ -12,11 +12,11 @@ interface EvolutionState {
     }
 }
 
-export class GameOfLife {
+export class GameOfLife<GraphicsType extends GraphicsController> {
 
     private gameBoard: GameBoard;
     private engine: GameEngine;
-    private graphics: GraphicsController;
+    public readonly graphics: GraphicsType;
 
     private evolution: EvolutionState = {
         isEvolving: false,
@@ -27,36 +27,37 @@ export class GameOfLife {
         }
     }
 
-    constructor(graphics: GraphicsController){
+    constructor(graphics: GraphicsType){
         this.gameBoard = new GameBoard();
         this.engine = new GameEngine();
         this.graphics = graphics;
+        this.initEvents();
     }
     
-    bornCell(point: Point){
+    public bornCell(point: Point){
         this.gameBoard.setCell(point, true);
     }
 
-    killCell(point: Point){
+    public killCell(point: Point){
         this.gameBoard.setCell(point, false);
     }
 
-    exterminateCells(){
+    public exterminateCells(){
         this.gameBoard.resetCells();
     }
 
     /**
      * Deprecated
      */
-    getBoard(){
+    public getBoard(){
         return this.gameBoard.getBoard();
     }
     
-    getCells(){
+    public getCells(){
         return this.gameBoard.getCells();
     }
 
-    setConfig(options: {
+    public setConfig(options: {
         onNextGeneration?: (board: GameBoard) => void,
         delay?: number
     }){
@@ -67,7 +68,7 @@ export class GameOfLife {
         config.delay = delay || config.delay;
     }
 
-    startEvolution(){
+    public startEvolution(){
         const { isEvolving, config } = this.evolution;
         const { onNextGeneration, delay } = config;
         
@@ -76,6 +77,7 @@ export class GameOfLife {
         }
         
         onNextGeneration(this.gameBoard);
+        this.graphics.setCells(this.gameBoard.getCells());
 
         const intervalID = window.setInterval(() => {   
             const nextGen = this.evolveGeneration();
@@ -88,7 +90,7 @@ export class GameOfLife {
 
     }
 
-    pauseEvolution(){
+    public pauseEvolution(){
         const { isEvolving, intervalID } = this.evolution;
          
         if(isEvolving && intervalID !== -1){
@@ -98,14 +100,14 @@ export class GameOfLife {
         }
     }
 
-    resumeEvolution(){
+    public resumeEvolution(){
         const { isEvolving, config } = this.evolution;
         
         if(!isEvolving){
             const { delay, onNextGeneration } = config;
             
+            this.evolveGeneration();
             const intervalID = window.setInterval(() => {
-                this.evolveGeneration();
                 const nextGen = this.evolveGeneration();
                 this.graphics.setCells(nextGen.getCells());
                 onNextGeneration(nextGen);
@@ -121,4 +123,28 @@ export class GameOfLife {
         return this.gameBoard = newGeneration;
     }
 
+    private initEvents(){
+        const {events} = this.graphics;
+
+        events.on({
+            type:"onCellBorn",
+            callback: (point: Point) => {
+                this.bornCell(point);
+            }
+        });
+
+        events.on({
+            type:"onCellKill",
+            callback: (point: Point) => {
+                this.killCell(point);
+            }
+        });
+
+        events.on({
+            type:"onCellToggle",
+            callback: (point: Point) => {
+                // this.gameBoard.toggleCell(point);
+            }
+        })
+    }
 }
