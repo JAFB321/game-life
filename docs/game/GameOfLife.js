@@ -13,6 +13,7 @@ var GameOfLife = /** @class */ (function () {
         this.gameBoard = new GameBoard();
         this.engine = new GameEngine();
         this.graphics = graphics;
+        this.initEvents();
     }
     GameOfLife.prototype.bornCell = function (point) {
         this.gameBoard.setCell(point, true);
@@ -46,6 +47,7 @@ var GameOfLife = /** @class */ (function () {
             this.pauseEvolution();
         }
         onNextGeneration(this.gameBoard);
+        this.graphics.setCells(this.gameBoard.getCells());
         var intervalID = window.setInterval(function () {
             var nextGen = _this.evolveGeneration();
             _this.graphics.setCells(nextGen.getCells());
@@ -67,8 +69,8 @@ var GameOfLife = /** @class */ (function () {
         var _a = this.evolution, isEvolving = _a.isEvolving, config = _a.config;
         if (!isEvolving) {
             var delay = config.delay, onNextGeneration_1 = config.onNextGeneration;
+            this.evolveGeneration();
             var intervalID = window.setInterval(function () {
-                _this.evolveGeneration();
                 var nextGen = _this.evolveGeneration();
                 _this.graphics.setCells(nextGen.getCells());
                 onNextGeneration_1(nextGen);
@@ -80,6 +82,28 @@ var GameOfLife = /** @class */ (function () {
     GameOfLife.prototype.evolveGeneration = function () {
         var newGeneration = this.engine.nextGeneration(this.gameBoard);
         return this.gameBoard = newGeneration;
+    };
+    GameOfLife.prototype.initEvents = function () {
+        var _this = this;
+        var events = this.graphics.events;
+        events.on({
+            type: "onCellBorn",
+            callback: function (point) {
+                _this.bornCell(point);
+            }
+        });
+        events.on({
+            type: "onCellKill",
+            callback: function (point) {
+                _this.killCell(point);
+            }
+        });
+        events.on({
+            type: "onCellToggle",
+            callback: function (point) {
+                // this.gameBoard.toggleCell(point);
+            }
+        });
     };
     return GameOfLife;
 }());

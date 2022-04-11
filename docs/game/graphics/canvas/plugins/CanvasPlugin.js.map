@@ -1,0 +1,1 @@
+{"version":3,"file":"CanvasPlugin.js","sourceRoot":"","sources":["../../../../../src/game/graphics/canvas/plugins/CanvasPlugin.ts"],"names":[],"mappings":"AAEA;IAMI,sBAAY,MAAyB,EAAE,SAA6B,EAAE,SAA8C;QAChH,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC;QACrB,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;QAC3B,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;IAC/B,CAAC;IAEL,mBAAC;AAAD,CAAC,AAZD,IAYC"}

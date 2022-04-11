@@ -1,0 +1,1 @@
+{"version":3,"file":"Math.js","sourceRoot":"","sources":["../../../src/game/utils/Math.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,IAAM,KAAK,GAAG,UAAC,MAAc,EAAE,QAAgB;IAClD,IAAM,aAAa,GAAG,IAAI,CAAC,GAAG,CAAC,EAAE,EAAE,QAAQ,CAAC,CAAC;IAC7C,OAAO,IAAI,CAAC,KAAK,CAAC,MAAM,GAAG,aAAa,CAAC,GAAG,aAAa,CAAC;AAC9D,CAAC,CAAA"}
