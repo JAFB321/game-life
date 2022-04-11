@@ -10,7 +10,7 @@ function test(){
     if(!info) return;
     if(!canvas) return;
 
-    performanceCanvas(canvas);
+    // performanceCanvas(canvas);
 
     const graphics = new CanvasController(canvas);
     const game = new GameOfLife(graphics);
