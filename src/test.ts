@@ -28,9 +28,9 @@ function test(){
     });
     game.startEvolution();
     
-    setTimeout(() => {
-        game.pauseEvolution();
-    }, 10500);
+    // setTimeout(() => {
+    //     game.pauseEvolution();
+    // }, 10500);
 
     game.graphics.setConfig({
         board: {
