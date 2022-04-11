@@ -2,9 +2,11 @@ import { GameOfLife } from './game/GameOfLife.js'
 import { CanvasController } from './game/graphics/canvas/CanvasController.js';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#gameboard-main');
+const info = document.querySelector('.floating-info');
 
 
 function test(){   
+    if(!info) return;
     if(!canvas) return;
     
     const graphics = new CanvasController(canvas);
@@ -36,6 +38,10 @@ function test(){
         }
     });
 
+    setInterval(() => {
+        const newConfig = game.graphics.getConfig();     
+        info.innerHTML = JSON.stringify(newConfig, null, 4);
+    }, 200);
 
     window.gameStart = () => game.resumeEvolution();
     window.gameStop = () => game.pauseEvolution();
