@@ -59,7 +59,7 @@ export class CanvasPainter{
         const ctx = this.canvasContext;
         const {cells, colors, grid, board} = config;
         const {zoom} = board;
-        const {cell: color} = colors;
+        const {cell: cell_color, selected_cell: selected_cell_color} = colors;
         
         // Scale cell size to zoom
         let {gap} = grid;
@@ -70,23 +70,23 @@ export class CanvasPainter{
 
         const cell_size = size+gap*4;
 
+        ctx.fillStyle = cell_color;
         for (const point of aliveCells) {
             const {x, y} = point;
 
             const cell_x = (x)*(cell_size)+gap*2;
             const cell_y = (y)*(cell_size)+gap*2;
 
-            ctx.fillStyle = color;
             ctx.fillRect(cell_x, cell_y, size, size);            
         }
         
+        ctx.fillStyle = selected_cell_color;
         for (const point of selectedCells) {
             const {x, y} = point;
 
             const cell_x = (x)*(size+gap*4)+gap*3;
             const cell_y = (y)*(size+gap*4)+gap*3;
 
-            ctx.fillStyle = color;
             ctx.fillRect(cell_x, cell_y, size, size);            
         }
     }

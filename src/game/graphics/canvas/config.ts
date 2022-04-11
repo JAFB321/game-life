@@ -16,6 +16,7 @@ export interface CanvasConfig {
     colors: {
         background: string,
         cell: string,
+        selected_cell: string,
         grid: string
     }
 }
@@ -38,6 +39,7 @@ export interface CanvasConfigParams{
     colors?: {
         background?: string,
         cell?: string,
+        selected_cell?: string,
         grid?: string
     }
 }
@@ -60,6 +62,7 @@ export const defaultCanvasConfig: CanvasConfig = {
     colors: {
         background: '#22272e',
         cell: '#ffffff',
+        selected_cell: 'rgba(255,255,255,0.2)',
         grid: '#626567'
     }
 }
