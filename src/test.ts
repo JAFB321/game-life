@@ -16,10 +16,11 @@ function test(){
     const game = new GameOfLife(graphics);
 
     game.bornCell({x: 10,y: 10});
-    game.bornCell({x: 11,y: 11});
-    game.bornCell({x: 12,y: 11});
-    game.bornCell({x: 12,y: 10});
-    game.bornCell({x: 12,y: 9});
+    game.bornCell({x: 10,y: 11});
+    game.bornCell({x: 10,y: 12});
+    game.bornCell({x: 10,y: 14});
+    game.bornCell({x: 9,y: 14});
+    game.bornCell({x: 11,y: 14});
 
     game.setConfig({
         onNextGeneration: () => {},
@@ -28,13 +29,14 @@ function test(){
     });
     game.startEvolution();
     
-    // setTimeout(() => {
-    //     game.pauseEvolution();
-    // }, 10500);
+    setTimeout(() => {
+        game.pauseEvolution();
+    }, 30500);
 
     game.graphics.setConfig({
         board: {
-            // zoom: 150
+            // width: 300,
+            // height: 100
         },
         grid: {
             gap: 0.5
