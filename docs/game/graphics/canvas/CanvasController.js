@@ -51,6 +51,9 @@ var CanvasController = /** @class */ (function (_super) {
         var _this = this;
         var draggable = new Draggable(this.canvas, function () { return _this.getConfig(); }, function (config) { return _this.setConfig(config); });
         var selectedCells = new SelectedCells(this.canvas, function () { return _this.getConfig(); }, function (config) { return _this.setConfig(config); }, function () { return _this.selectedCells; }, function (selectedCells) { return _this.setSelectedCells(selectedCells); });
+        selectedCells.onCellClicked(function (point) {
+            _this.events.emitCellToggle(point);
+        });
         this.plugins = [
             draggable,
             selectedCells

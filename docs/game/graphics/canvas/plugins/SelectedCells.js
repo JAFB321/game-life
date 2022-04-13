@@ -20,9 +20,18 @@ var SelectedCells = /** @class */ (function (_super) {
         var _this = _super.call(this, canvas, getConfig, setConfig) || this;
         _this.getSelectedCells = getSelectedCells;
         _this.setSelectCells = setSelectCells;
+        _this.listeners = {
+            onCellClicked: []
+        };
         _this.init();
         return _this;
     }
+    SelectedCells.prototype.onCellClicked = function (callback) {
+        this.listeners.onCellClicked.push(callback);
+    };
+    SelectedCells.prototype.emitCellSelected = function (point) {
+        this.listeners.onCellClicked.forEach(function (callback) { return callback(point); });
+    };
     SelectedCells.prototype.init = function () {
         var _this = this;
         var canvas = this.canvas;
@@ -38,6 +47,11 @@ var SelectedCells = /** @class */ (function (_super) {
             var pos_x = Math.floor(((x - offset_x) / cell_size));
             var pos_y = Math.floor(((y - offset_y) / cell_size));
             _this.setSelectCells([{ x: pos_x, y: pos_y }]);
+        });
+        canvas.addEventListener('dblclick', function (ev) {
+            var cell = _this.getSelectedCells()[0];
+            if (cell)
+                _this.emitCellSelected(cell);
         });
     };
     return SelectedCells;

@@ -16,10 +16,19 @@ var GameOfLife = /** @class */ (function () {
         this.initEvents();
     }
     GameOfLife.prototype.bornCell = function (point) {
+        this.pauseEvolution();
         this.gameBoard.setCell(point, true);
+        this.updateGraphics();
     };
     GameOfLife.prototype.killCell = function (point) {
+        this.pauseEvolution();
         this.gameBoard.setCell(point, false);
+        this.updateGraphics();
+    };
+    GameOfLife.prototype.toggleCell = function (point) {
+        this.pauseEvolution();
+        this.gameBoard.setCell(point, !this.gameBoard.getCell(point));
+        this.updateGraphics();
     };
     GameOfLife.prototype.exterminateCells = function () {
         this.gameBoard.resetCells();
@@ -47,11 +56,10 @@ var GameOfLife = /** @class */ (function () {
             this.pauseEvolution();
         }
         onNextGeneration(this.gameBoard);
-        this.graphics.setCells(this.gameBoard.getCells());
+        this.updateGraphics();
         var intervalID = window.setInterval(function () {
-            var nextGen = _this.evolveGeneration();
-            _this.graphics.setCells(nextGen.getCells());
-            onNextGeneration(nextGen);
+            _this.evolveGeneration();
+            onNextGeneration(_this.gameBoard);
         }, delay);
         this.evolution.isEvolving = true;
         this.evolution.intervalID = intervalID;
@@ -71,9 +79,8 @@ var GameOfLife = /** @class */ (function () {
             var delay = config.delay, onNextGeneration_1 = config.onNextGeneration;
             this.evolveGeneration();
             var intervalID = window.setInterval(function () {
-                var nextGen = _this.evolveGeneration();
-                _this.graphics.setCells(nextGen.getCells());
-                onNextGeneration_1(nextGen);
+                _this.evolveGeneration();
+                onNextGeneration_1(_this.gameBoard);
             }, delay);
             this.evolution.isEvolving = true;
             this.evolution.intervalID = intervalID;
@@ -81,7 +88,11 @@ var GameOfLife = /** @class */ (function () {
     };
     GameOfLife.prototype.evolveGeneration = function () {
         var newGeneration = this.engine.nextGeneration(this.gameBoard);
-        return this.gameBoard = newGeneration;
+        this.gameBoard = newGeneration;
+        this.updateGraphics();
+    };
+    GameOfLife.prototype.updateGraphics = function () {
+        this.graphics.setCells(this.gameBoard.getCells());
     };
     GameOfLife.prototype.initEvents = function () {
         var _this = this;
@@ -101,6 +112,8 @@ var GameOfLife = /** @class */ (function () {
         events.on({
             type: "onCellToggle",
             callback: function (point) {
+                console.log(point);
+                _this.toggleCell(point);
                 // this.gameBoard.toggleCell(point);
             }
         });
