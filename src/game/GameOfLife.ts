@@ -45,6 +45,11 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         this.gameBoard.setCell(point, false);
         this.updateGraphics();
     }
+
+    public toggleCell(point: Point){
+        this.pauseEvolution();
+        this.gameBoard.setCell(point, !this.gameBoard.getCell(point));
+        this.updateGraphics();
     }
 
     public exterminateCells(){
@@ -151,6 +156,8 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         events.on({
             type:"onCellToggle",
             callback: (point: Point) => {
+                console.log(point);
+                this.toggleCell(point);
                 // this.gameBoard.toggleCell(point);
             }
         })
