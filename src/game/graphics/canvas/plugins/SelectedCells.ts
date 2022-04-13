@@ -6,6 +6,9 @@ export class SelectedCells extends CanvasPlugin {
 
     private readonly getSelectedCells: () => Point[];
     private readonly setSelectCells: (points: Point[]) => any;
+    private readonly listeners: {
+        onCellClicked :((point: Point) => any)[]
+    }
 
     constructor(
         canvas: HTMLCanvasElement,
@@ -17,7 +20,18 @@ export class SelectedCells extends CanvasPlugin {
         super(canvas, getConfig, setConfig);
         this.getSelectedCells = getSelectedCells;
         this.setSelectCells = setSelectCells;
+        this.listeners = {
+            onCellClicked: []
+        };
         this.init();
+    }
+
+    public onCellClicked(callback: (point: Point) => any) {
+        this.listeners.onCellClicked.push(callback);
+    }
+
+    private emitCellSelected(point: Point) {
+        this.listeners.onCellClicked.forEach(callback => callback(point));
     }
 
     public init() {
@@ -39,6 +53,11 @@ export class SelectedCells extends CanvasPlugin {
             const pos_y = Math.floor(((y-offset_y) / cell_size));
                         
             this.setSelectCells([{x: pos_x, y: pos_y}]);
-        })
+        });
+
+        canvas.addEventListener('dblclick',  (ev) => {
+            const cell = this.getSelectedCells()[0];
+            if(cell) this.emitCellSelected(cell);
+        });
     }
 }

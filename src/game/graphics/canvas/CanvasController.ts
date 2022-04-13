@@ -54,6 +54,10 @@ export class CanvasController extends GraphicsController {
             (selectedCells) => this.setSelectedCells(selectedCells)
         );
 
+        selectedCells.onCellClicked(point => {
+            this.events.emitCellToggle(point);
+        });
+
         this.plugins = [
             draggable,
             selectedCells
