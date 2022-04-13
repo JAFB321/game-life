@@ -35,11 +35,21 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
     }
     
     public bornCell(point: Point){
+        this.pauseEvolution();
         this.gameBoard.setCell(point, true);
+        this.updateGraphics();
     }
 
     public killCell(point: Point){
+        this.pauseEvolution();
         this.gameBoard.setCell(point, false);
+        this.updateGraphics();
+    }
+
+    public toggleCell(point: Point){
+        this.pauseEvolution();
+        this.gameBoard.setCell(point, !this.gameBoard.getCell(point));
+        this.updateGraphics();
     }
 
     public exterminateCells(){
@@ -77,12 +87,11 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         }
         
         onNextGeneration(this.gameBoard);
-        this.graphics.setCells(this.gameBoard.getCells());
+        this.updateGraphics();
 
         const intervalID = window.setInterval(() => {   
-            const nextGen = this.evolveGeneration();
-            this.graphics.setCells(nextGen.getCells());
-            onNextGeneration(nextGen);
+            this.evolveGeneration();
+            onNextGeneration(this.gameBoard);
         }, delay);
 
         this.evolution.isEvolving = true;
@@ -108,9 +117,8 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
             
             this.evolveGeneration();
             const intervalID = window.setInterval(() => {
-                const nextGen = this.evolveGeneration();
-                this.graphics.setCells(nextGen.getCells());
-                onNextGeneration(nextGen);
+                this.evolveGeneration();
+                onNextGeneration(this.gameBoard);
             }, delay);
             
             this.evolution.isEvolving = true;
@@ -120,7 +128,12 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
 
     private evolveGeneration(){
         const newGeneration = this.engine.nextGeneration(this.gameBoard);
-        return this.gameBoard = newGeneration;
+        this.gameBoard = newGeneration;
+        this.updateGraphics();
+    }
+
+    private updateGraphics(){
+        this.graphics.setCells(this.gameBoard.getCells());
     }
 
     private initEvents(){
@@ -143,6 +156,8 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         events.on({
             type:"onCellToggle",
             callback: (point: Point) => {
+                console.log(point);
+                this.toggleCell(point);
                 // this.gameBoard.toggleCell(point);
             }
         })
