@@ -6,60 +6,18 @@ export class GameEngine {
         const newGameboard = new GameBoard();
 
         // performance.mark("start-script")
-        const newLimits = {
-            x: {...board.limits.x},
-            y: {...board.limits.y}
-        };
-        newLimits.x.min-= 2;
-        newLimits.x.max+= 2;
-        newLimits.y.min-= 2;
-        newLimits.y.max+= 2;
+        const cells = board.getCells();
 
-        for(let x_pos = newLimits.x.min; x_pos < newLimits.x.max; x_pos++){
-            for(let y_pos = newLimits.y.min; y_pos < newLimits.y.max; y_pos++){
-                
-                // Current cell
-                const isAlive = board.getCell({x: x_pos, y: y_pos});
-
-                // New Cell
-                let newCell = false;
-
-                // Count alive silbings
-                let aliveSilbings = 0;
-                aliveSilbings += board.getCell({x: x_pos,   y: y_pos+1}) ? 1 : 0;
-                aliveSilbings += board.getCell({x: x_pos+1, y: y_pos+1}) ? 1 : 0;
-                aliveSilbings += board.getCell({x: x_pos+1, y: y_pos}) ? 1 : 0;
-                aliveSilbings += board.getCell({x: x_pos+1, y: y_pos-1}) ? 1 : 0;
-                aliveSilbings += board.getCell({x: x_pos,   y: y_pos-1}) ? 1 : 0;
-                aliveSilbings += board.getCell({x: x_pos-1, y: y_pos-1}) ? 1 : 0;
-                aliveSilbings += board.getCell({x: x_pos-1, y: y_pos}) ? 1 : 0;
-                aliveSilbings += board.getCell({x: x_pos-1, y: y_pos+1}) ? 1 : 0;
-
-                // Cell live rules
-                if(isAlive){
-                    if(aliveSilbings < 2) {
-                        newCell = false;
-                    }
-                    else if(aliveSilbings <= 3) {
-                        newCell = true;
-                    }
-                    else {
-                        newCell = false;
-                    }
-                }
-                else {
-                    if(aliveSilbings === 3) {
-                        newCell = true;
-                    }
-                    else {
-                        newCell = false;
-                    }
-                }
-            
-                if(newCell){
-                    newGameboard.setCell({x: x_pos, y: y_pos}, true);
-                }
-            }
+        for(const {x, y} of cells){
+            this.getCellLife(board, x, y) && newGameboard.setCell({x, y});
+            this.getCellLife(board, x+1, y) && newGameboard.setCell({x: x+1, y});
+            this.getCellLife(board, x+1, y+1) && newGameboard.setCell({x: x+1, y: y+1});
+            this.getCellLife(board, x+1, y-1) && newGameboard.setCell({x: x+1, y: y-1});
+            this.getCellLife(board, x-1, y+1) && newGameboard.setCell({x: x-1, y: y+1});
+            this.getCellLife(board, x-1, y-1) && newGameboard.setCell({x: x-1, y: y-1});
+            this.getCellLife(board, x-1, y) && newGameboard.setCell({x: x-1, y});
+            this.getCellLife(board, x, y+1) && newGameboard.setCell({x: x, y: y+1});
+            this.getCellLife(board, x, y-1) && newGameboard.setCell({x: x, y: y-1});
         }
 
         // performance.mark("end-script")
@@ -67,4 +25,27 @@ export class GameEngine {
 
         return newGameboard;
     }
+
+    private getCellLife(board: GameBoard, x: number, y: number){
+        let aliveSilbings = 0;
+            aliveSilbings += board.getCell({x: x,   y: y+1}) ? 1 : 0;
+            aliveSilbings += board.getCell({x: x+1, y: y+1}) ? 1 : 0;
+            aliveSilbings += board.getCell({x: x+1, y: y}) ? 1 : 0;
+            aliveSilbings += board.getCell({x: x+1, y: y-1}) ? 1 : 0;
+            aliveSilbings += board.getCell({x: x,   y: y-1}) ? 1 : 0;
+            aliveSilbings += board.getCell({x: x-1, y: y-1}) ? 1 : 0;
+            aliveSilbings += board.getCell({x: x-1, y: y}) ? 1 : 0;
+            aliveSilbings += board.getCell({x: x-1, y: y+1}) ? 1 : 0;
+
+            const isAlive = board.getCell({x, y});
+
+            // Cell live rules
+            if(isAlive){
+                if(aliveSilbings >= 2 && aliveSilbings <= 3) return true;
+            }
+            else if(aliveSilbings === 3) return true;
+
+        return false;
+    }
+
 }
