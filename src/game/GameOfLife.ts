@@ -56,12 +56,6 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         this.gameBoard.resetCells();
     }
 
-    /**
-     * Deprecated
-     */
-    public getBoard(){
-        return this.gameBoard.getBoard();
-    }
     
     public getCells(){
         return this.gameBoard.getCells();
