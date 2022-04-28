@@ -32,6 +32,7 @@ export class CanvasController extends GraphicsController {
         this.plugins = [];
 
         this.initPlugins();
+        this.configDOMCanvas();
     }
 
     protected render(){
@@ -62,6 +63,13 @@ export class CanvasController extends GraphicsController {
             draggable,
             selectedCells
         ]
+    }
+
+    private configDOMCanvas(){
+        this.canvas.style.width = `${this.config.board.width}px`;
+        this.canvas.style.height = `${this.config.board.height}px`;
+        this.canvas.style.overflow = 'hidden';
+        this.canvas.style.backgroundColor = this.config.colors.background;
     }
 
     protected setSelectedCells(selectedCells: Point[]){
@@ -106,7 +114,10 @@ export class CanvasController extends GraphicsController {
                 ...grid,
             }
         };
-        window.requestAnimationFrame(() => this.render());
+        window.requestAnimationFrame(() => {
+            this.render();
+            this.configDOMCanvas();
+        });
     }
 }
 
