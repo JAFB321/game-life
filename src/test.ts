@@ -24,14 +24,10 @@ function test(){
 
     game.setConfig({
         onNextGeneration: () => {},
-        delay: 50
+        delay: 200
         
     });
     game.startEvolution();
-    
-    setTimeout(() => {
-        game.pauseEvolution();
-    }, 30500);
 
     game.graphics.setConfig({
         board: {
@@ -45,7 +41,7 @@ function test(){
             size: 20
         },
         colors:{
-            background: '#222'
+            background: '#222222'
         }
     });
 
@@ -54,8 +50,8 @@ function test(){
         info.innerHTML = JSON.stringify(newConfig, null, 4);
     }, 200);
 
-    window.gameStart = () => game.resumeEvolution();
-    window.gameStop = () => game.pauseEvolution();
+    window.gameStart = () => game.startEvolution();
+    window.gameStop = () => game.stopEvolution();
 
     // let n = 100;
     // setInterval(() => {
