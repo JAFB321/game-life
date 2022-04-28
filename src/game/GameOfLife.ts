@@ -34,21 +34,21 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         this.initEvents();
     }
     
-    public bornCell(point: Point){
+    public bornCell({x, y}: Point){
         this.pauseEvolution();
-        this.gameBoard.setCell(point, true);
+        this.gameBoard.setCell(x, y, true);
         this.updateGraphics();
     }
 
-    public killCell(point: Point){
+    public killCell({x, y}: Point){
         this.pauseEvolution();
-        this.gameBoard.setCell(point, false);
+        this.gameBoard.setCell(x, y, false);
         this.updateGraphics();
     }
 
-    public toggleCell(point: Point){
+    public toggleCell({x, y}: Point){
         this.pauseEvolution();
-        this.gameBoard.setCell(point, !this.gameBoard.getCell(point));
+        this.gameBoard.setCell(x, y, !this.gameBoard.getCell(x, y));
         this.updateGraphics();
     }
 

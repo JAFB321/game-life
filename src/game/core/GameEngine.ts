@@ -9,15 +9,15 @@ export class GameEngine {
         const cells = board.getCells();
 
         for(const {x, y} of cells){
-            this.getCellLife(board, x, y) && newGameboard.setCell({x, y});
-            this.getCellLife(board, x+1, y) && newGameboard.setCell({x: x+1, y});
-            this.getCellLife(board, x+1, y+1) && newGameboard.setCell({x: x+1, y: y+1});
-            this.getCellLife(board, x+1, y-1) && newGameboard.setCell({x: x+1, y: y-1});
-            this.getCellLife(board, x-1, y+1) && newGameboard.setCell({x: x-1, y: y+1});
-            this.getCellLife(board, x-1, y-1) && newGameboard.setCell({x: x-1, y: y-1});
-            this.getCellLife(board, x-1, y) && newGameboard.setCell({x: x-1, y});
-            this.getCellLife(board, x, y+1) && newGameboard.setCell({x: x, y: y+1});
-            this.getCellLife(board, x, y-1) && newGameboard.setCell({x: x, y: y-1});
+            this.getCellLife(board, x, y) && newGameboard.setCell(x, y);
+            this.getCellLife(board, x+1, y) && newGameboard.setCell(x+1, y);
+            this.getCellLife(board, x+1, y+1) && newGameboard.setCell(x+1, y+1);
+            this.getCellLife(board, x+1, y-1) && newGameboard.setCell(x+1, y-1);
+            this.getCellLife(board, x-1, y+1) && newGameboard.setCell(x-1, y+1);
+            this.getCellLife(board, x-1, y-1) && newGameboard.setCell(x-1, y-1);
+            this.getCellLife(board, x-1, y) && newGameboard.setCell(x-1, y);
+            this.getCellLife(board, x, y+1) && newGameboard.setCell(x, y+1);
+            this.getCellLife(board, x, y-1) && newGameboard.setCell(x, y-1);
         }
 
         // performance.mark("end-script")
@@ -28,16 +28,16 @@ export class GameEngine {
 
     private getCellLife(board: GameBoard, x: number, y: number){
         let aliveSilbings = 0;
-            aliveSilbings += board.getCell({x: x,   y: y+1}) ? 1 : 0;
-            aliveSilbings += board.getCell({x: x+1, y: y+1}) ? 1 : 0;
-            aliveSilbings += board.getCell({x: x+1, y: y}) ? 1 : 0;
-            aliveSilbings += board.getCell({x: x+1, y: y-1}) ? 1 : 0;
-            aliveSilbings += board.getCell({x: x,   y: y-1}) ? 1 : 0;
-            aliveSilbings += board.getCell({x: x-1, y: y-1}) ? 1 : 0;
-            aliveSilbings += board.getCell({x: x-1, y: y}) ? 1 : 0;
-            aliveSilbings += board.getCell({x: x-1, y: y+1}) ? 1 : 0;
+            aliveSilbings += board.getCell(x,   y+1) ? 1 : 0;
+            aliveSilbings += board.getCell(x+1, y+1) ? 1 : 0;
+            aliveSilbings += board.getCell(x+1, y) ? 1 : 0;
+            aliveSilbings += board.getCell(x+1, y-1) ? 1 : 0;
+            aliveSilbings += board.getCell(x,   y-1) ? 1 : 0;
+            aliveSilbings += board.getCell(x-1, y-1) ? 1 : 0;
+            aliveSilbings += board.getCell(x-1, y) ? 1 : 0;
+            aliveSilbings += board.getCell(x-1, y+1) ? 1 : 0;
 
-            const isAlive = board.getCell({x, y});
+            const isAlive = board.getCell(x, y);
 
             // Cell live rules
             if(isAlive){
