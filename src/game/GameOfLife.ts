@@ -35,25 +35,27 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
     }
     
     public bornCell({x, y}: Point){
-        this.pauseEvolution();
+        this.stopEvolution();
         this.gameBoard.setCell(x, y, true);
         this.updateGraphics();
     }
 
     public killCell({x, y}: Point){
-        this.pauseEvolution();
+        this.stopEvolution();
         this.gameBoard.setCell(x, y, false);
         this.updateGraphics();
     }
 
     public toggleCell({x, y}: Point){
-        this.pauseEvolution();
+        this.stopEvolution();
         this.gameBoard.setCell(x, y, !this.gameBoard.getCell(x, y));
         this.updateGraphics();
     }
 
     public exterminateCells(){
+        this.stopEvolution();
         this.gameBoard.resetCells();
+        this.updateGraphics();
     }
 
     
@@ -76,9 +78,8 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         const { isEvolving, config } = this.evolution;
         const { onNextGeneration, delay } = config;
         
-        if(isEvolving){
-            this.pauseEvolution();
-        }
+        if(isEvolving) return;
+        
         
         onNextGeneration(this.gameBoard);
         this.updateGraphics();
@@ -93,30 +94,13 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
 
     }
 
-    public pauseEvolution(){
+    public stopEvolution(){
         const { isEvolving, intervalID } = this.evolution;
          
         if(isEvolving && intervalID !== -1){
             clearInterval(intervalID);
             this.evolution.intervalID = -1;
             this.evolution.isEvolving = false;
-        }
-    }
-
-    public resumeEvolution(){
-        const { isEvolving, config } = this.evolution;
-        
-        if(!isEvolving){
-            const { delay, onNextGeneration } = config;
-            
-            this.evolveGeneration();
-            const intervalID = window.setInterval(() => {
-                this.evolveGeneration();
-                onNextGeneration(this.gameBoard);
-            }, delay);
-            
-            this.evolution.isEvolving = true;
-            this.evolution.intervalID = intervalID;
         }
     }
 
