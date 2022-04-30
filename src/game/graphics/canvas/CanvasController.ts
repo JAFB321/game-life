@@ -12,6 +12,10 @@ export class CanvasController extends GraphicsController {
     private painter: CanvasPainter;
     private plugins: CanvasPlugin[];
 
+    protected listeners: {
+        onConfigChange: ((config: CanvasConfig) => any)[]
+    }
+
     protected canvas: HTMLCanvasElement;
     protected canvasContext: CanvasRenderingContext2D;
     protected config: CanvasConfig;
@@ -27,6 +31,9 @@ export class CanvasController extends GraphicsController {
             throw new Error("Canvas cannot be null");
 
         this.config = defaultCanvasConfig;
+        this.listeners = {
+            onConfigChange: []
+        }
         
         this.painter = new CanvasPainter(canvas, this.canvasContext);
         this.plugins = [];
@@ -117,7 +124,14 @@ export class CanvasController extends GraphicsController {
         window.requestAnimationFrame(() => {
             this.render();
             this.configDOMCanvas();
+            setTimeout(() => {
+                this.listeners.onConfigChange.forEach(listener => listener(this.getConfig()));
+            }, 1);
         });
+    }
+
+    public onConfigChange(listener: (config: CanvasConfig) => any){
+        this.listeners.onConfigChange.push(listener);
     }
 }
 
