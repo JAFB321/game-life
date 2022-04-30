@@ -7,7 +7,7 @@ interface EvolutionState {
     isEvolving: boolean;
     intervalID: number;
     config: {
-        onNextGeneration: (board: GameBoard) => void,
+        onNextGeneration: (board: Point[]) => any,
         delay: number
     }
 }
@@ -22,7 +22,7 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         isEvolving: false,
         intervalID: -1,
         config: {
-            onNextGeneration: (board: GameBoard) => {},
+            onNextGeneration: (board: Point[]) => {},
             delay: 500
         }
     }
@@ -64,7 +64,7 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
     }
 
     public setConfig(options: {
-        onNextGeneration?: (board: GameBoard) => void,
+        onNextGeneration?: (board: Point[]) => void,
         delay?: number
     }){
         const { onNextGeneration, delay } = options;
@@ -81,12 +81,12 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         if(isEvolving) return;
         
         
-        onNextGeneration(this.gameBoard);
+        onNextGeneration(this.gameBoard.getCells());
         this.updateGraphics();
 
         const intervalID = window.setInterval(() => {   
             this.evolveGeneration();
-            onNextGeneration(this.gameBoard);
+            onNextGeneration(this.gameBoard.getCells());
         }, delay);
 
         this.evolution.isEvolving = true;
