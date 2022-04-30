@@ -40,6 +40,12 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         this.updateGraphics();
     }
 
+    public bornCells(points: Point[]){
+        this.stopEvolution();
+        points.forEach(point => this.gameBoard.setCell(point.x, point.y, true));
+        this.updateGraphics();
+    }
+
     public killCell({x, y}: Point){
         this.stopEvolution();
         this.gameBoard.setCell(x, y, false);
