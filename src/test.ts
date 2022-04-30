@@ -45,10 +45,9 @@ function test(){
         }
     });
 
-    setInterval(() => {
-        const newConfig = game.graphics.getConfig();     
+    game.graphics.onConfigChange((newConfig) => {
         info.innerHTML = JSON.stringify(newConfig, null, 4);
-    }, 200);
+    });
 
     window.gameStart = () => game.startEvolution();
     window.gameStop = () => game.stopEvolution();
