@@ -5,7 +5,7 @@ var CanvasPainter = /** @class */ (function () {
     }
     CanvasPainter.prototype.paint = function (config, aliveCells, selectedCells) {
         this.applyTransforms(config);
-        this.renderBackground(config);
+        // this.renderBackground(config);
         this.renderCells(config, aliveCells, selectedCells);
         this.renderGrid(config);
     };

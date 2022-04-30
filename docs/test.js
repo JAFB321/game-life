@@ -18,12 +18,9 @@ function test() {
     game.bornCell({ x: 11, y: 14 });
     game.setConfig({
         onNextGeneration: function () { },
-        delay: 50
+        delay: 200
     });
     game.startEvolution();
-    setTimeout(function () {
-        game.pauseEvolution();
-    }, 30500);
     game.graphics.setConfig({
         board: {
         // width: 300,
@@ -36,15 +33,14 @@ function test() {
             size: 20
         },
         colors: {
-            background: '#222'
+            background: '#222222'
         }
     });
-    setInterval(function () {
-        var newConfig = game.graphics.getConfig();
+    game.graphics.onConfigChange(function (newConfig) {
         info.innerHTML = JSON.stringify(newConfig, null, 4);
-    }, 200);
-    window.gameStart = function () { return game.resumeEvolution(); };
-    window.gameStop = function () { return game.pauseEvolution(); };
+    });
+    window.gameStart = function () { return game.startEvolution(); };
+    window.gameStop = function () { return game.stopEvolution(); };
     // let n = 100;
     // setInterval(() => {
     //     n+= 0.8;

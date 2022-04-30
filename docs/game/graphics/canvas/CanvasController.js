@@ -39,9 +39,13 @@ var CanvasController = /** @class */ (function (_super) {
         if (!_this.canvas || !_this.canvas.getContext("2d"))
             throw new Error("Canvas cannot be null");
         _this.config = defaultCanvasConfig;
+        _this.listeners = {
+            onConfigChange: []
+        };
         _this.painter = new CanvasPainter(canvas, _this.canvasContext);
         _this.plugins = [];
         _this.initPlugins();
+        _this.configDOMCanvas();
         return _this;
     }
     CanvasController.prototype.render = function () {
@@ -58,6 +62,12 @@ var CanvasController = /** @class */ (function (_super) {
             draggable,
             selectedCells
         ];
+    };
+    CanvasController.prototype.configDOMCanvas = function () {
+        this.canvas.style.width = "".concat(this.config.board.width, "px");
+        this.canvas.style.height = "".concat(this.config.board.height, "px");
+        this.canvas.style.overflow = 'hidden';
+        this.canvas.style.backgroundColor = this.config.colors.background;
     };
     CanvasController.prototype.setSelectedCells = function (selectedCells) {
         this.selectedCells = selectedCells;
@@ -81,7 +91,16 @@ var CanvasController = /** @class */ (function (_super) {
             colors: __assign(__assign({}, this.config.colors), colors),
             grid: __assign(__assign({}, this.config.grid), grid)
         };
-        window.requestAnimationFrame(function () { return _this.render(); });
+        window.requestAnimationFrame(function () {
+            _this.render();
+            _this.configDOMCanvas();
+            setTimeout(function () {
+                _this.listeners.onConfigChange.forEach(function (listener) { return listener(_this.getConfig()); });
+            }, 1);
+        });
+    };
+    CanvasController.prototype.onConfigChange = function (listener) {
+        this.listeners.onConfigChange.push(listener);
     };
     return CanvasController;
 }(GraphicsController));

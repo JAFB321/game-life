@@ -6,6 +6,9 @@
 //         this.point2 = new Point(x2, y2);
 //     }
 // }
+/**
+ * Deprecated
+ */
 var CartesianPlane = /** @class */ (function () {
     function CartesianPlane(defaultValue) {
         this.defaultValue = defaultValue;

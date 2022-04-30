@@ -15,29 +15,34 @@ var GameOfLife = /** @class */ (function () {
         this.graphics = graphics;
         this.initEvents();
     }
-    GameOfLife.prototype.bornCell = function (point) {
-        this.pauseEvolution();
-        this.gameBoard.setCell(point, true);
+    GameOfLife.prototype.bornCell = function (_a) {
+        var x = _a.x, y = _a.y;
+        this.stopEvolution();
+        this.gameBoard.setCell(x, y, true);
         this.updateGraphics();
     };
-    GameOfLife.prototype.killCell = function (point) {
-        this.pauseEvolution();
-        this.gameBoard.setCell(point, false);
+    GameOfLife.prototype.bornCells = function (points) {
+        var _this = this;
+        this.stopEvolution();
+        points.forEach(function (point) { return _this.gameBoard.setCell(point.x, point.y, true); });
         this.updateGraphics();
     };
-    GameOfLife.prototype.toggleCell = function (point) {
-        this.pauseEvolution();
-        this.gameBoard.setCell(point, !this.gameBoard.getCell(point));
+    GameOfLife.prototype.killCell = function (_a) {
+        var x = _a.x, y = _a.y;
+        this.stopEvolution();
+        this.gameBoard.setCell(x, y, false);
+        this.updateGraphics();
+    };
+    GameOfLife.prototype.toggleCell = function (_a) {
+        var x = _a.x, y = _a.y;
+        this.stopEvolution();
+        this.gameBoard.setCell(x, y, !this.gameBoard.getCell(x, y));
         this.updateGraphics();
     };
     GameOfLife.prototype.exterminateCells = function () {
+        this.stopEvolution();
         this.gameBoard.resetCells();
-    };
-    /**
-     * Deprecated
-     */
-    GameOfLife.prototype.getBoard = function () {
-        return this.gameBoard.getBoard();
+        this.updateGraphics();
     };
     GameOfLife.prototype.getCells = function () {
         return this.gameBoard.getCells();
@@ -52,38 +57,23 @@ var GameOfLife = /** @class */ (function () {
         var _this = this;
         var _a = this.evolution, isEvolving = _a.isEvolving, config = _a.config;
         var onNextGeneration = config.onNextGeneration, delay = config.delay;
-        if (isEvolving) {
-            this.pauseEvolution();
-        }
-        onNextGeneration(this.gameBoard);
+        if (isEvolving)
+            return;
+        onNextGeneration(this.gameBoard.getCells());
         this.updateGraphics();
         var intervalID = window.setInterval(function () {
             _this.evolveGeneration();
-            onNextGeneration(_this.gameBoard);
+            onNextGeneration(_this.gameBoard.getCells());
         }, delay);
         this.evolution.isEvolving = true;
         this.evolution.intervalID = intervalID;
     };
-    GameOfLife.prototype.pauseEvolution = function () {
+    GameOfLife.prototype.stopEvolution = function () {
         var _a = this.evolution, isEvolving = _a.isEvolving, intervalID = _a.intervalID;
         if (isEvolving && intervalID !== -1) {
             clearInterval(intervalID);
             this.evolution.intervalID = -1;
             this.evolution.isEvolving = false;
-        }
-    };
-    GameOfLife.prototype.resumeEvolution = function () {
-        var _this = this;
-        var _a = this.evolution, isEvolving = _a.isEvolving, config = _a.config;
-        if (!isEvolving) {
-            var delay = config.delay, onNextGeneration_1 = config.onNextGeneration;
-            this.evolveGeneration();
-            var intervalID = window.setInterval(function () {
-                _this.evolveGeneration();
-                onNextGeneration_1(_this.gameBoard);
-            }, delay);
-            this.evolution.isEvolving = true;
-            this.evolution.intervalID = intervalID;
         }
     };
     GameOfLife.prototype.evolveGeneration = function () {
