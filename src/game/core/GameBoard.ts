@@ -1,106 +1,27 @@
-import { CartesianPlane, Point } from "../structures/CartesianPlane.js";
-
-interface BoardLimits {
-    x: {
-        min: number,
-        max: number
-    }
-
-    y: {
-        min: number,
-        max: number
-    }
-}
+import { Point } from "../structures/CartesianPlane.js";
 
 export class GameBoard {
 
-    private board: CartesianPlane<boolean>;
-
-    // Min and max current values in the board
-    private _limits: BoardLimits;
+    private board: Map<string, Point>;
 
 	constructor() {
-        this.board = new CartesianPlane(false);
-
-        this._limits = {
-            x:{
-                max: 0,
-                min: 0
-            },
-            y: {
-                max: 0,
-                min: 0
-            }
-        }
+        this.board = new Map();
     }
 
-    public get limits(){
-        return this._limits;
-    }
-
-	public setCell({x,y}: Point, alive = true) {
-        this.updateLimits(x, y);
-		this.board.setPoint({x, y}, alive);
+	public setCell(x: number, y: number, alive = true) {
+        if(alive) this.board.set(`${x}:${y}`, {x, y});
+        else this.board.delete(`${x}:${y}`);
 	}
 
-    public getCell(point: Point){
-        return this.board.getPoint(point);
-    }
-    /**
-     * Deprecated
-     */
-    public getBoard(){
-        const board = new CartesianPlane(false);
-
-        for(let x = this._limits.x.min; x < this._limits.x.max+1; x++){
-            for(let y = this._limits.y.min; y < this._limits.y.max+1; y++){
-                const isAlive = this.board.getPoint({x, y});
-                if(!!isAlive) {
-                    board.setPoint({x, y}, true);
-                }
-            }
-        }
-
-        return{
-            board
-        }
+    public getCell(x: number, y: number){
+        return this.board.has(`${x}:${y}`);
     }
 
     public getCells(){
-        const cells = [];
-
-        for(let x = this._limits.x.min; x < this._limits.x.max+1; x++){
-            for(let y = this._limits.y.min; y < this._limits.y.max+1; y++){
-                const isAlive = this.board.getPoint({x, y});
-                if(!!isAlive) {
-                    cells.push({x, y});
-                }
-            }
-        }
-
-        return cells;
+        return Array.from(this.board.values());
     }
 
     resetCells(){
-        this.board.resetPlane();
-        this.resetLimits();
+        this.board.clear();
     }
-
-    private updateLimits(x: number, y: number){
-        const {min: x_min, max: x_max} = this._limits.x;
-        const {min: y_min, max: y_max} = this._limits.y;
-        
-        if(x < x_min) this._limits.x.min = x;
-        if(x > x_max) this._limits.x.max = x;
-        if(y < y_min) this._limits.y.min = y;
-        if(y > y_max) this._limits.y.max = y;
-    }
-    
-    private resetLimits(){
-        this._limits.x.min = 0;
-        this._limits.x.max = 0;
-        this._limits.y.min = 0;
-        this._limits.y.max = 0;
-    }
-
 }

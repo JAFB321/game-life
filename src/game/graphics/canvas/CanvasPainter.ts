@@ -13,7 +13,7 @@ export class CanvasPainter{
 
     paint(config: CanvasConfig, aliveCells: Point[], selectedCells: Point[]): void {
         this.applyTransforms(config);
-        this.renderBackground(config);
+        // this.renderBackground(config);
         this.renderCells(config, aliveCells, selectedCells);
         this.renderGrid(config);
     }

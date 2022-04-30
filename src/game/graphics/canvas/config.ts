@@ -60,7 +60,7 @@ export const defaultCanvasConfig: CanvasConfig = {
         zoom: 100,
     },
     colors: {
-        background: '#22272e',
+        background: '#222222',
         cell: '#ffffff',
         selected_cell: 'rgba(255,255,255,0.2)',
         grid: '#626567'

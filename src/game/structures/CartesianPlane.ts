@@ -13,6 +13,9 @@ export interface Point{
 //     }
 // }
 
+/**
+ * Deprecated
+ */
 export class CartesianPlane<ValueType> {
 
     // Cartesian Plane quadrants
