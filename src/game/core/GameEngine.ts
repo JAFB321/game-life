@@ -1,4 +1,4 @@
-import { GameBoard } from "./GameBoard.js";
+import { GameBoard } from "./GameBoard";
 
 export class GameEngine {
 

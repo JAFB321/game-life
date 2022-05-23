@@ -1,6 +1,6 @@
-import { Point } from "../../../structures/CartesianPlane.js";
-import { CanvasConfig, CanvasConfigParams } from "../config.js";
-import { CanvasPlugin } from "./CanvasPlugin.js";
+import { Point } from "../../../structures/CartesianPlane";
+import { CanvasConfig, CanvasConfigParams } from "../config";
+import { CanvasPlugin } from "./CanvasPlugin";
 
 export class SelectedCells extends CanvasPlugin {
 

@@ -1,4 +1,4 @@
-import { Point } from "../structures/CartesianPlane.js";
+import { Point } from "../structures/CartesianPlane";
 
 export class GameBoard {
 

@@ -1,6 +1,6 @@
-import { GameBoard } from "../core/GameBoard.js";
-import { Point } from "../structures/CartesianPlane.js";
-import { GraphicsEvents } from "./GraphicsEvents.js";
+import { GameBoard } from "../core/GameBoard";
+import { Point } from "../structures/CartesianPlane";
+import { GraphicsEvents } from "./GraphicsEvents";
 
 export class GraphicsController{
 

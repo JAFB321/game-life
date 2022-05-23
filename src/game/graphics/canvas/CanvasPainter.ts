@@ -1,5 +1,5 @@
-import { Point } from "../../structures/CartesianPlane.js";
-import { CanvasConfig } from "./config.js";
+import { Point } from "../../structures/CartesianPlane";
+import { CanvasConfig } from "./config";
 
 export class CanvasPainter{
     

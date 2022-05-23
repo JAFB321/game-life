@@ -1,11 +1,11 @@
-import { GameBoard } from "../../core/GameBoard.js";
-import { Point } from "../../structures/CartesianPlane.js";
-import { GraphicsController } from "../GraphicsController.js";
-import { CanvasPainter } from "./CanvasPainter.js";
-import { CanvasConfig, CanvasConfigParams, defaultCanvasConfig } from "./config.js";
-import { CanvasPlugin } from "./plugins/CanvasPlugin.js";
-import { SelectedCells } from "./plugins/SelectedCells.js";
-import { Draggable } from "./plugins/Draggable.js";
+import { GameBoard } from "../../core/GameBoard";
+import { Point } from "../../structures/CartesianPlane";
+import { GraphicsController } from "../GraphicsController";
+import { CanvasPainter } from "./CanvasPainter";
+import { CanvasConfig, CanvasConfigParams, defaultCanvasConfig } from "./config";
+import { CanvasPlugin } from "./plugins/CanvasPlugin";
+import { SelectedCells } from "./plugins/SelectedCells";
+import { Draggable } from "./plugins/Draggable";
 
 export class CanvasController extends GraphicsController {
 
