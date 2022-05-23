@@ -1,7 +1,7 @@
 {
   "name": "game-of-life",
   "version": "1.0.0",
-  "description": " John Horton Conway \"Game of life\" simulator\"",
+  "description": "Customizable Conway's \"Game of life\" cellular automat game",
   "scripts": {
     "start": "npm run build && npm run serve",
     "start:watch": "npm run build && npm run serve",
