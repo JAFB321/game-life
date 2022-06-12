@@ -3,12 +3,8 @@
   "version": "1.0.0",
   "description": "Customizable Conway's \"Game of life\" cellular automat game",
   "scripts": {
-    "start": "npm run build && npm run serve",
-    "start:watch": "npm run build && npm run serve",
-    "serve": "http-server ./dist/ -a localhost -p 5500 -o",
-    "build": "tsc && npm run build:copy-files",
-    "build:watch": "npm run build:copy-files && tsc --watch",
-    "build:copy-files": "copyfiles -f ./public/** ./dist",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "test": "jest"
   },
   "repository": {
@@ -23,8 +19,7 @@
   "homepage": "https://github.com/JAFB321/game-of-life#readme",
   "devDependencies": {
     "@types/jest": "^27.5.1",
-    "copyfiles": "^2.4.1",
-    "http-server": "^14.1.0",
+    "canvas": "^2.9.1",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
     "ts-jest": "^28.0.2",
@@ -38,8 +33,5 @@
     "preset": "ts-jest",
     "testEnvironment": "jsdom",
     "testRegex": "\\.test\\.ts$"
-  },
-  "dependencies": {
-    "canvas": "^2.9.1"
   }
 }
