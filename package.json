@@ -1,5 +1,5 @@
 {
-  "name": "game-of-life",
+  "name": "game-life",
   "version": "1.0.0",
   "description": "Customizable Conway's \"Game of life\" cellular automat game",
   "scripts": {
