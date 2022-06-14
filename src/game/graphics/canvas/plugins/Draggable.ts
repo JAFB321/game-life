@@ -1,7 +1,7 @@
-import { Point } from "../../../structures/CartesianPlane";
-import { CanvasPainter } from "../CanvasPainter";
-import { CanvasConfig, CanvasConfigParams } from "../config";
-import { CanvasPlugin } from "./CanvasPlugin";
+import { Point } from "../../../structures/CartesianPlane.js";
+import { CanvasPainter } from "../CanvasPainter.js";
+import { CanvasConfig, CanvasConfigParams } from "../config.js";
+import { CanvasPlugin } from "./CanvasPlugin.js";
 
 interface DragState {
     isDragging: boolean;

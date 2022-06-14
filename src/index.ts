@@ -1,7 +1,7 @@
-import { GameConfigParams } from "./config";
-import { GameOfLife } from "./game/GameOfLife";
-import { CanvasController } from "./game/graphics/canvas/CanvasController";
-import { CanvasConfigParams } from "./game/graphics/canvas/config";
+import { GameConfigParams } from "./config.js";
+import { GameOfLife } from "./game/GameOfLife.js";
+import { CanvasController } from "./game/graphics/canvas/CanvasController.js";
+import { CanvasConfigParams } from "./game/graphics/canvas/config.js";
 
 const createGameOfLife = (
         canvas: HTMLCanvasElement,

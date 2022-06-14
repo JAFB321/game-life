@@ -1,7 +1,7 @@
-import { GameBoard } from "./core/GameBoard";
-import { GameEngine } from "./core/GameEngine";
-import { GraphicsController } from "./graphics/GraphicsController";
-import { Point } from "./structures/CartesianPlane";
+import { GameBoard } from "./core/GameBoard.js";
+import { GameEngine } from "./core/GameEngine.js";
+import { GraphicsController } from "./graphics/GraphicsController.js";
+import { Point } from "./structures/CartesianPlane.js";
 
 interface EvolutionState {
     isEvolving: boolean;

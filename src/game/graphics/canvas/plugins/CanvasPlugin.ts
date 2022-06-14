@@ -1,4 +1,4 @@
-import { CanvasConfig, CanvasConfigParams } from "../config";
+import { CanvasConfig, CanvasConfigParams } from "../config.js";
 
 export class CanvasPlugin {
 
