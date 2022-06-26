@@ -1,4 +1,4 @@
-import { Point } from "../structures/CartesianPlane";
+import { Point } from "../structures/CartesianPlane.js";
 
 export type EventTypes = "onCellBorn" | "onCellKill" | "onCellToggle";
 

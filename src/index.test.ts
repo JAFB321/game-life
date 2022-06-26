@@ -1,19 +1,40 @@
-import { GameOfLife } from './game/GameOfLife.js'
-import { CanvasController } from './game/graphics/canvas/CanvasController.js';
-import { performanceCanvas } from './test/performance.js';
-
+import { GameOfLife } from "./game/GameOfLife";
+import { CanvasController } from "./game/graphics/canvas/CanvasController";
+import createGameOfLife from "./index";
 const canvas = document.querySelector<HTMLCanvasElement>('#gameboard-main');
 const info = document.querySelector('.floating-info');
 
+describe('Game of life', () => {
+    test('Instance a new game', () => {
+        const canvas = document.createElement('canvas');
 
-function test(){   
+        const game = createGameOfLife(canvas);
+        
+        expect(game).toBeInstanceOf(GameOfLife)
+        expect(game.graphics).toBeInstanceOf(CanvasController);
+        expect(game.getCells().length).toBe(0);
+    })
+
+    test('Add a cell', () => {
+        const canvas = document.createElement('canvas');
+
+        const game = createGameOfLife(canvas);
+        game.bornCell({x: 1, y: 1});
+        expect(game.getCells().length).toBe(1);
+        expect(game.getCells()).toContainEqual({x: 1, y: 1});
+        
+    })
+})
+
+function init(){   
     if(!info) return;
     if(!canvas) return;
 
-    // performanceCanvas(canvas);
-
-    const graphics = new CanvasController(canvas);
-    const game = new GameOfLife(graphics);
+    const game = createGameOfLife(canvas, {
+        game: {
+            delay: 200
+        }
+    });
 
     game.bornCell({x: 10,y: 10});
     game.bornCell({x: 10,y: 11});
@@ -22,11 +43,6 @@ function test(){
     game.bornCell({x: 9,y: 14});
     game.bornCell({x: 11,y: 14});
 
-    game.setConfig({
-        onNextGeneration: () => {},
-        delay: 200
-        
-    });
     game.startEvolution();
 
     game.graphics.setConfig({
@@ -64,7 +80,7 @@ function test(){
     // }, 1000);
 }
 
-test();
+init();
 
 
 
