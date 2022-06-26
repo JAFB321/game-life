@@ -73,8 +73,13 @@ export class CanvasController extends GraphicsController {
     }
 
     private configDOMCanvas(){
+        const {height, width} = this.config.board;
+        const {width: canvasWidth, height: canvasHeight} = this.canvas;
+
         this.canvas.style.width = `${this.config.board.width}px`;
         this.canvas.style.height = `${this.config.board.height}px`;
+        if(width !== canvasWidth) this.canvas.width = this.config.board.width;
+        if(height !== canvasHeight) this.canvas.height = this.config.board.height;
         this.canvas.style.overflow = 'hidden';
         this.canvas.style.backgroundColor = this.config.colors.background;
     }
