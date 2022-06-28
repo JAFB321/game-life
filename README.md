@@ -42,7 +42,7 @@ npm install game-life
 ```   
 #### 2. Or add Script CDN 
 ```html
-<script crossorigin="anonymous" src="https://unpkg.com/game-life@1.1.2/umd/gamelife.min.js"></script>
+<script crossorigin="anonymous" src="https://unpkg.com/game-life@1.2.0-b/umd/gamelife.min.js"></script>
 ```   
 
 ## Usage 💡

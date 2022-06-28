@@ -1,6 +1,6 @@
 {
   "name": "game-life",
-  "version": "1.2.0b",
+  "version": "1.2.0c",
   "description": "Customizable Conway's \"Game of life\" cellular automat game",
   "main": "lib/index.js",
   "files": [
