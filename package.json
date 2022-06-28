@@ -5,11 +5,13 @@
   "main": "lib/index.js",
   "files": [
     "lib/**/*",
-    "umd/**/*"
+    "umd/**/*",
+    "README.md"
   ],
   "scripts": {
     "build": "tsc",
-    "build:bundle": "webpack",
+    "build:umd": "webpack",
+    "build:umd:watch": "webpack --watch",
     "build:watch": "tsc --watch",
     "test": "jest"
   },
