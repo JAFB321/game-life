@@ -8,8 +8,8 @@
   <p>
 
 
-[![NPM version](https://img.shields.io/npm/v/game-life?style=flat-square)](https://img.shields.io/npm/v/game-life?style=flat-square)
-[![Package size](https://img.shields.io/bundlephobia/min/game-life)](https://img.shields.io/bundlephobia/min/game-life?style=flat-square)
+[![NPM version](https://img.shields.io/npm/v/game-life?style=flat-square)](https://www.npmjs.com/package/game-life)
+[![Package size](https://img.shields.io/bundlephobia/min/game-life?style=flat-square)](https://www.npmjs.com/package/game-life)
 ![npm](https://img.shields.io/npm/dt/game-life?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/jafb321/game-life?style=flat-square)
 ![GitHub Repo stars](https://img.shields.io/github/stars/jafb321/game-life?style=social)
@@ -22,10 +22,10 @@
 
 #### Content
 
-* [Features](##features)
-* [Install](##install)
-* [Usage](##usage)
-* [API](##Api)
+* [Features](#features-)
+* [Install](#install-)
+* [Usage](#usage-)
+* [API](#api-)
 
 ## Features ✨
 - Easy to use
@@ -35,7 +35,7 @@
 - Made with love <3
 
 ## Install 🐱‍💻
-There is 2 ways to install it in your project:
+There are 2 ways to install it in your project:
 #### 1. Install npm package (ES6 Import)
 ```bash
 npm install game-life
