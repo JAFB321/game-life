@@ -1,6 +1,6 @@
 import { Point } from "../structures/CartesianPlane.js";
 
-export type EventTypes = "onCellBorn" | "onCellKill" | "onCellToggle" | "onGameStartStop";
+export type EventTypes = "onCellBorn" | "onCellKill" | "onCellToggle" | "onGameStartStop" | "onSpeedUp" | "onSpeedDown";
 
 export type onCellBorn = {
     type: "onCellBorn",
@@ -18,4 +18,14 @@ export type onCellToggle = {
 export type onGameStartStop = {
     type: "onGameStartStop",
     callback: Function
+}
+
+export type onSpeedUp = {
+    type: "onSpeedUp",
+    callback: (factor: number) => any
+}
+
+export type onSpeedDown = {
+    type: "onSpeedDown",
+    callback: (factor: number) => any
 }

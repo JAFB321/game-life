@@ -74,7 +74,15 @@ export class CanvasController extends GraphicsController {
         )
 
         keyControls.onGameStartStop(() => {
-            this.events.onGameStartStop();
+            this.events.emitGameStartStop();
+        })
+
+        keyControls.onSpeedUp((factor) => {
+            this.events.emitSpeedUp(factor);
+        })
+
+        keyControls.onSpeedDowm((factor) => {
+            this.events.emitSpeedDown(factor);
         })
 
         this.plugins = [

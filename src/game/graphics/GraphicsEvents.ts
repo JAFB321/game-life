@@ -1,5 +1,5 @@
 import { Point } from '../structures/CartesianPlane.js';
-import {EventTypes, onCellBorn, onCellKill, onCellToggle, onGameStartStop} from './EventTypes.js';
+import {EventTypes, onCellBorn, onCellKill, onCellToggle, onGameStartStop, onSpeedDown, onSpeedUp} from './EventTypes.js';
 
 export class GraphicsEvents {
 
@@ -7,7 +7,9 @@ export class GraphicsEvents {
         onCellBorn: Function[],
         onCellKill: Function[],
         onCellToggle: Function[],
-        onGameStartStop: Function[]
+        onGameStartStop: Function[],
+        onSpeedDown: Function[],
+        onSpeedUp: Function[],
     }
 
     constructor(){
@@ -16,9 +18,11 @@ export class GraphicsEvents {
             onCellKill: [],
             onCellToggle: [],
             onGameStartStop: [],
+            onSpeedDown: [],
+            onSpeedUp: [],
         }
     }
-    public on(event: onCellBorn | onCellKill | onCellToggle | onGameStartStop){
+    public on(event: onCellBorn | onCellKill | onCellToggle | onGameStartStop | onSpeedUp | onSpeedDown){
         this.listeners[event.type].push(event.callback);
     }
 
@@ -38,7 +42,15 @@ export class GraphicsEvents {
         this.emit("onCellToggle", point);
     }
 
-    public onGameStartStop(){
+    public emitGameStartStop(){
         this.emit("onGameStartStop", null);
+    }
+
+    public emitSpeedUp(factor: number){
+        this.emit("onSpeedUp", factor);
+    }
+
+    public emitSpeedDown(factor: number){
+        this.emit("onSpeedDown", factor);
     }
 }
