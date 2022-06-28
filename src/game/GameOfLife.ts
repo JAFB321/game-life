@@ -69,6 +69,22 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         return this.gameBoard.getCells();
     }
 
+    public speedUp(factor: number){
+        const {delay} = this.evolution.config;
+        this.changeDelay(Math.floor((delay/(factor || 1))));
+    }
+    
+    public speedDown(factor: number){
+        const {delay} = this.evolution.config;
+        this.changeDelay(Math.floor((delay/(factor || 1))));
+    }
+
+    public changeDelay(ms: number){
+        this.setConfig({
+            delay: ms >= 20 ? ms : 20
+        })
+    }
+
     public setConfig(options: {
         onNextGeneration?: (board: Point[]) => void,
         delay?: number
@@ -151,6 +167,20 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
             callback: () => {
                 if(this.evolution.isEvolving) this.stopEvolution()
                 else this.startEvolution()
+            }
+        })
+
+        events.on({
+            type: "onSpeedUp",
+            callback: (factor) => {
+                this.speedUp(factor);
+            }
+        })
+
+        events.on({
+            type: "onSpeedDown",
+            callback: (factor) => {
+                this.speedDown(factor);
             }
         })
     }

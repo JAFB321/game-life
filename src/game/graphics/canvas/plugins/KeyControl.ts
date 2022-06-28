@@ -5,14 +5,18 @@ import { CanvasPlugin } from "./CanvasPlugin.js";
 export class KeyControl extends CanvasPlugin {
 
     private readonly listeners: {
-        onGameStartStop :(() => any)[]
+        onGameStartStop :(() => any)[],
+        onSpeedUp :((factor: number) => any)[],
+        onSpeedDown :((factor: number) => any)[],
     }
 
     constructor(canvas: HTMLCanvasElement, getConfig: () => CanvasConfig, setConfig: (config: CanvasConfigParams) => any){
         super(canvas, getConfig, setConfig);
 
         this.listeners = {
-            onGameStartStop: []
+            onGameStartStop: [],
+            onSpeedDown: [],
+            onSpeedUp: []
         }
         this.init();
     }
@@ -21,8 +25,24 @@ export class KeyControl extends CanvasPlugin {
         this.listeners.onGameStartStop.push(callback);
     }
 
+    public onSpeedUp(callback: (factor: number) => any){
+        this.listeners.onSpeedUp.push(callback);
+    }
+
+    public onSpeedDowm(callback: (factor: number) => any){
+        this.listeners.onSpeedDown.push(callback);
+    }
+
     private emitGameStartStop() {
         this.listeners.onGameStartStop.forEach(callback => callback());
+    }
+
+    private emitSpeedUp(factor: number) {
+        this.listeners.onSpeedUp.forEach(callback => callback(factor));
+    }
+
+    private emitSpeedDown(factor: number) {
+        this.listeners.onSpeedDown.forEach(callback => callback(factor));
     }
 
     private init(){   
@@ -35,6 +55,19 @@ export class KeyControl extends CanvasPlugin {
 
     private onKey(evt: KeyboardEvent){
         const {key} = evt;
-        if(key === 'Enter') this.emitGameStartStop();
+       
+        switch (key) {
+            case 'Enter':
+                this.emitGameStartStop();
+                break;
+        
+            case '+':
+                this.emitSpeedUp(1.2);               
+                break;
+
+            case '-':
+                this.emitSpeedDown(0.8);
+                break;
+        }
     }
 }
