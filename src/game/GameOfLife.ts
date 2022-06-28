@@ -76,8 +76,10 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         const { onNextGeneration, delay } = options;
         const { config } = this.evolution;
         
+        this.stopEvolution();
         config.onNextGeneration = onNextGeneration || config.onNextGeneration;
         config.delay = delay || config.delay;
+        this.startEvolution();
     }
 
     public startEvolution(){
