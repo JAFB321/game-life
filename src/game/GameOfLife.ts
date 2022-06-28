@@ -76,8 +76,10 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         const { onNextGeneration, delay } = options;
         const { config } = this.evolution;
         
+        this.stopEvolution();
         config.onNextGeneration = onNextGeneration || config.onNextGeneration;
         config.delay = delay || config.delay;
+        this.startEvolution();
     }
 
     public startEvolution(){
@@ -140,9 +142,15 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         events.on({
             type:"onCellToggle",
             callback: (point: Point) => {
-                console.log(point);
                 this.toggleCell(point);
-                // this.gameBoard.toggleCell(point);
+            }
+        })
+
+        events.on({
+            type: "onGameStartStop",
+            callback: () => {
+                if(this.evolution.isEvolving) this.stopEvolution()
+                else this.startEvolution()
             }
         })
     }
