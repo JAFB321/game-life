@@ -140,9 +140,15 @@ export class GameOfLife<GraphicsType extends GraphicsController> {
         events.on({
             type:"onCellToggle",
             callback: (point: Point) => {
-                console.log(point);
                 this.toggleCell(point);
-                // this.gameBoard.toggleCell(point);
+            }
+        })
+
+        events.on({
+            type: "onGameStartStop",
+            callback: () => {
+                if(this.evolution.isEvolving) this.stopEvolution()
+                else this.startEvolution()
             }
         })
     }

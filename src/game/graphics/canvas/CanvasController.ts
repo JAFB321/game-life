@@ -6,6 +6,7 @@ import { CanvasConfig, CanvasConfigParams, defaultCanvasConfig } from "./config.
 import { CanvasPlugin } from "./plugins/CanvasPlugin.js";
 import { SelectedCells } from "./plugins/SelectedCells.js";
 import { Draggable } from "./plugins/Draggable.js";
+import { KeyControl } from "./plugins/KeyControl.js";
 
 export class CanvasController extends GraphicsController {
 
@@ -65,10 +66,21 @@ export class CanvasController extends GraphicsController {
         selectedCells.onCellClicked(point => {
             this.events.emitCellToggle(point);
         });
+        
+        const keyControls = new KeyControl(
+            this.canvas,
+            () => this.getConfig(),
+            (config) => this.setConfig(config),
+        )
+
+        keyControls.onGameStartStop(() => {
+            this.events.onGameStartStop();
+        })
 
         this.plugins = [
             draggable,
-            selectedCells
+            selectedCells,
+            keyControls
         ]
     }
 
