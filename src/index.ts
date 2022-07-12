@@ -23,3 +23,19 @@ const createGameOfLife = (
 }
 
 export default createGameOfLife;
+export * from './config'
+export * from './game/GameOfLife'
+export * from './game/core/GameBoard'
+export * from './game/core/GameEngine'
+export * from './game/graphics/EventTypes'
+export * from './game/graphics/GraphicsController'
+export * from './game/graphics/GraphicsEvents'
+export * from './game/graphics/canvas/CanvasController'
+export * from './game/graphics/canvas/CanvasPainter'
+export * from './game/graphics/canvas/config'
+export * from './game/graphics/canvas/plugins/CanvasPlugin'
+export * from './game/graphics/canvas/plugins/Draggable'
+export * from './game/graphics/canvas/plugins/KeyControl'
+export * from './game/graphics/canvas/plugins/SelectedCells'
+export * from './game/structures/CartesianPlane'
+export * from './game/utils/Math'
