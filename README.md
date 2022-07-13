@@ -60,7 +60,19 @@ const canvas = document.querySelector('canvas');
 
 const game = GameLife(canvas);
 ```
-Whatever the case, you can also pass a **default config** to the game:
+
+##### Result:
+![Game life dark demo](https://raw.githubusercontent.com/JAFB321/JAFB321/main/game-life-dark.gif)
+
+
+#### How to use
+- Drag to explore the board
+- Double click to spawn/kill cells
+- Mouse wheel to zoom in/out
+- Enter to start/pause evolution
+- +/- keys to speed up/down
+
+###### You can also pass a **default config** to the game:
 ```javascript
 const game = GameLife(canvas, {
     graphics: {
@@ -71,13 +83,9 @@ const game = GameLife(canvas, {
     game: {delay: 1000}
 });
 ```
+##### Result:
+![Game life white demo](https://raw.githubusercontent.com/JAFB321/JAFB321/main/game-life-white.gif)
 
-#### How to use
-- Drag to explore the board
-- Double click to spawn/kill cells
-- Mouse wheel to zoom in/out
-- Enter to start/pause evolution
-- +/- keys to speed up/down
 
 #### Manual actions 
 ```javascript
