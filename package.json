@@ -1,8 +1,22 @@
 {
   "name": "game-life",
-  "version": "1.2.3b",
+  "version": "1.2.4",
   "description": "Customizable Conway's \"Game of life\" cellular automat game",
-  "main": "lib/index.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "modules": {
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+  },
+    "./cjs": "lib/cjs/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "./cjs": [ "lib/cjs/index.d.ts" ]
+    }
+  },
   "files": [
     "lib/**/*",
     "umd/**/*",
