@@ -1,18 +1,34 @@
 {
   "name": "game-life",
-  "version": "1.2.3b",
+  "version": "1.2.4",
   "description": "Customizable Conway's \"Game of life\" cellular automat game",
-  "main": "lib/index.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/esm/index.d.ts",
+  "modules": {
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+  },
+    "./cjs": "lib/cjs/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "./cjs": [ "lib/cjs/index.d.ts" ]
+    }
+  },
   "files": [
     "lib/**/*",
     "umd/**/*",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "npm run build:esm && npm run build:cjs && npm run build:umd",
+    "build:esm": "tsc --target ES6",
+    "build:cjs": "tsc --target ES6 --module commonjs --outDir lib/cjs",
     "build:umd": "webpack",
-    "build:umd:watch": "webpack --watch",
     "build:watch": "tsc --watch",
+    "build:umd:watch": "webpack --watch",
     "test": "jest"
   },
   "repository": {
