@@ -7,7 +7,6 @@
   </p>
   <p>
 
-
 [![NPM version](https://img.shields.io/npm/v/game-life?style=flat-square)](https://www.npmjs.com/package/game-life)
 [![Package size](https://img.shields.io/bundlephobia/min/game-life?style=flat-square)](https://www.npmjs.com/package/game-life)
 ![npm](https://img.shields.io/npm/dt/game-life?style=flat-square)
@@ -22,12 +21,13 @@
 
 #### Content
 
-* [Features](#features-)
-* [Install](#install-)
-* [Usage](#usage-)
-* [API](#api-)
+- [Features](#features-)
+- [Install](#install-)
+- [Usage](#usage-)
+- [API](#api-)
 
 ## Features ✨
+
 - Easy to use
 - Work with canvas element (cooming soon with DOM)
 - No dependencies
@@ -35,37 +35,51 @@
 - Made with love <3
 
 ## Install 🐱‍💻
+
 There are 2 ways to install it in your project:
+
 #### 1. Install npm package (ES6 Import)
+
 ```bash
 npm install game-life
-```   
-#### 2. Or add Script CDN 
+```
+
+#### 2. Or add Script CDN
+
 ```html
-<script crossorigin="anonymous" src="https://unpkg.com/game-life@1.2.0-b/umd/gamelife.min.js"></script>
-```   
+<script
+  crossorigin="anonymous"
+  src="https://unpkg.com/game-life@1.2.0-b/umd/gamelife.min.js"
+></script>
+```
 
 ## Usage 💡
+
 Depending on how you installed, there are two ways to use it:
+
 #### 1. ES6 Import
+
 ```javascript
-import GameLife from 'game-life'
-const canvas = document.querySelector('canvas');
+import GameLife from "game-life";
+const canvas = document.querySelector("canvas");
 
 const game = GameLife(canvas);
 ```
+
 #### 2. or with script CDN
+
 ```javascript
-const canvas = document.querySelector('canvas');
+const canvas = document.querySelector("canvas");
 
 const game = GameLife(canvas);
 ```
 
 ##### Result:
+
 ![Game life dark demo](https://raw.githubusercontent.com/JAFB321/JAFB321/main/game-life-dark.gif)
 
-
 #### How to use
+
 - Drag to explore the board
 - Double click to spawn/kill cells
 - Mouse wheel to zoom in/out
@@ -73,37 +87,42 @@ const game = GameLife(canvas);
 - +/- keys to speed up/down
 
 ###### You can also pass a **default config** to the game:
+
 ```javascript
 const game = GameLife(canvas, {
-    graphics: {
-        board: {width: 1900, height: 800},
-        colors: {background: '#FFFFFF', grid: '#E0E0E0'},
-        cells: {size: 20}
-    },
-    game: {delay: 1000}
+  graphics: {
+    board: { width: 1900, height: 800 },
+    colors: { background: "#FFFFFF", grid: "#E0E0E0" },
+    cells: { size: 20 },
+  },
+  game: { delay: 1000 },
 });
 ```
+
 ##### Result:
+
 ![Game life white demo](https://raw.githubusercontent.com/JAFB321/JAFB321/main/game-life-white.gif)
 
+#### Manual actions
 
-#### Manual actions 
 ```javascript
-const game = GameLife(canvas)
+const game = GameLife(canvas);
 
-game.bornCell({x: 10, t: 10}) // Spawn cell
-game.killCell({x: 10, y: 10}) // Kill cell
-game.startEvolution()         // Start 
-game.stopEvolution()          // Stop
-game.speedUp(1.5)             // Speed up 1.5x
-game.speedDown(0.8)           // Speed down 0.8x
-game.graphics.setConfig({     // Change graphics config
-    colors: {background: '#F0F0F0', cell: '#000000'}
-})
+game.bornCell({ x: 10, t: 10 }); // Spawn cell
+game.killCell({ x: 10, y: 10 }); // Kill cell
+game.startEvolution(); // Start
+game.stopEvolution(); // Stop
+game.speedUp(1.5); // Speed up 1.5x
+game.speedDown(0.8); // Speed down 0.8x
+game.graphics.setConfig({
+  // Change graphics config
+  colors: { background: "#F0F0F0", cell: "#000000" },
+});
 // and more
 ```
 
 ## API 👩‍💻
+
 Cooming soon... 🚧
 
 ---
